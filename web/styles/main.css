@@ -1,0 +1,35 @@
+:root{
+	scroll-behavior: smooth;
+}
+body{
+	font-family: sans-serif;
+}
+#search_but{
+	cursor: pointer;
+}
+#stop_play{
+	cursor: pointer;
+}
+#list-area{
+	text-align: center;
+}
+.sound-button{
+	text-align: left;
+	cursor: pointer;
+	padding: 10px;
+	border: 2px solid;
+	border-radius: 12px;
+	transition: 1s;
+	margin: 5px;
+}
+.sound-button.playing{
+	pointer-events: none;
+	background: lightgrey;
+	transition: 0s;
+}
+.sound-button.playing:before{
+	content: '▶';
+}
+.sound-button .time{
+	float: right;
+}

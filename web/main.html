@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sound Pad</title>
+	<script type="text/javascript" src="/eel.js"></script>
+	<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+	<span>Input:</span>
+	<select id="input-device">
+		<option value="false">None</option>
+	</select>
+	<br>
+	<span>Output:</span>
+	<select id="output-device"></select>
+	<br>
+	<span>Preview:</span>
+	<input type="checkbox" checked id="enable-preview">
+	<br>
+	<button id="stop_play">Stop</button>
+
+	<br><hr>
+
+	<span>API:</span>
+		<select id="api">
+			<option value="meowpad">meowpad.me</option>
+			<option value="myinstants">myinstants.com</option>
+			<option value="zvukogram">zvukogram.com</option>
+			<option value="youtube">youtube.com</option>
+		</select>
+	
+	<br><hr>
+	<span>Search:</span><input id="search"><button id="search_but">🔎</button>
+	<br><hr>
+
+	<div id="list-area"></div>
+
+
+<script src="scripts/main.js" defer></script>
+</body>
+</html>
