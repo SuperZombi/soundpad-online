@@ -1,12 +1,9 @@
-from tkinter import Tk
-from tkinter.filedialog import askdirectory, askopenfilename, askopenfilenames
 import eel
 import time
 import sys, os
 import requests
 from bs4 import BeautifulSoup
 import json
-# from pygame import mixer, _sdl2 as devicer
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
@@ -17,9 +14,11 @@ import re
 import subprocess
 import threading
 from datetime import timedelta
+from fuzzywuzzy import process
+from send2trash import send2trash
 
 
-__version__ = '0.0.1'
+__version__ = '0.1.0'
 
 # ---- Required Functions ----
 
@@ -32,6 +31,9 @@ def resource_path(relative_path):
 def get_version():
 	return __version__
 
+
+CHUNK_SIZE = 2048
+permanent_delete = False
 
 
 # --- Settings Functions ----
@@ -155,6 +157,27 @@ def search_meowpad(text, limit=1):
 
 		buttonList.extend(tracks)
 	return buttonList
+
+
+
+@eel.expose
+def search_favorites(text):
+	def get_durration(f):
+		metadata = audio_metadata.load(f)
+		return round(metadata.streaminfo.duration)
+	folder = os.path.join(os.getcwd(), "downloads")
+	files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+	if text:
+		filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
+		files = list(map(lambda x: x[0], filtered))
+
+	files = map(lambda x: {
+			"title": os.path.splitext(x)[0],
+			"duration": '{:02}:{:02}'.format(*divmod(get_durration(os.path.join(folder, x)), 60)),
+			"link": os.path.join(folder, x),
+			"local": True
+		}, files)
+	return list(files)
 # ----------------------------
 
 
@@ -191,7 +214,7 @@ def play_sound(file, identifier=None):
 					  rate=metadata.streaminfo.sample_rate,
 					  output=True)
 
-		chunk = 1024
+		chunk = CHUNK_SIZE
 		data = output_file.read(chunk)
 		while data:
 			if stopPlaying:
@@ -215,7 +238,7 @@ def stop_play():
 	stopPlaying = True
 
 @eel.expose
-def play_sound_url(url):
+def play_sound_url(url, save=False, filename=None):
 	youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))')
 	youtubemode = False
 	if youtube.findall(url):
@@ -223,12 +246,22 @@ def play_sound_url(url):
 			url = get_yt_audio(link)
 			r = requests.get(url)
 			f = BytesIO(r.content)
-			play_sound(f, link)
+			if save:
+				save_file(f, filename)
+			else:
+				play_sound(f, link)
 		threading.Thread(target=convert_youtube, args=(url,), daemon=True).start()
 	else:
-		r = requests.get(url)
-		f = BytesIO(r.content)
-		threading.Thread(target=play_sound, args=(f, url), daemon=True).start()
+		if os.path.isfile(url):
+			with open(url, "rb") as file:
+				f = BytesIO(file.read())
+		else:
+			r = requests.get(url)
+			f = BytesIO(r.content)
+		if save:
+			save_file(f, filename)
+		else:
+			threading.Thread(target=play_sound, args=(f, url), daemon=True).start()
 	
 # -----------------------------
 # --- Microphone Function ----
@@ -249,7 +282,7 @@ def listen_micro():
 					  output_device_index=OUTPUT_DEVICE,
 					  output=True)
 
-		chunk = 1024
+		chunk = CHUNK_SIZE
 		input_stream.start_stream()
 		while input_stream.is_active():
 			data = input_stream.read(chunk)
@@ -272,6 +305,38 @@ def listen_micro():
 	threading.Thread(target=listen_micro, daemon=True).start()
 
 # -----------------------------
+# --- Storage Functions ------
+def save_file(file, filename):
+	folder = os.path.join(os.getcwd(), "downloads")
+	if not os.path.exists(folder):
+		os.mkdir(folder)
+	target = os.path.join(folder, filename)
+	def generate_new_file_name(fname):
+		if os.path.exists(fname):
+			name, extension = os.path.splitext(fname)
+			new_name = name + "_1" + extension
+			return generate_new_file_name(new_name)
+		return fname
+	target = generate_new_file_name(target)
+
+	command = ['ffmpeg', '-i', 'pipe:', "-acodec", "copy", '-f', 'mp3', target]
+	proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = proc.communicate(input=file.read())
+	if proc.returncode != 0:
+		print(stderr)
+
+
+@eel.expose
+def save_sound(url, filename):
+	play_sound_url(url, save=True, filename=filename + ".mp3")
+
+@eel.expose
+def delete_sound(url):
+	if os.path.exists(url):
+		if permanent_delete:
+			os.remove(url)
+		else:
+			send2trash(url)
 
 
 eel.init(resource_path("web"))
