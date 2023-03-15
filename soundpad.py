@@ -18,7 +18,7 @@ from fuzzywuzzy import process
 from send2trash import send2trash
 
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 # ---- Required Functions ----
 

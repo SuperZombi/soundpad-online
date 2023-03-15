@@ -1,4 +1,6 @@
 (async function(){
+	let version = await eel.get_version()();
+	document.getElementById("version").innerHTML = version;
 	let devices = await eel.get_audio_devices()();
 
 	let input_devices_area = document.getElementById("input-device");
@@ -86,21 +88,30 @@ start_search() // onload
 
 
 function addButton(args){
-	let b = document.createElement("div");
-	b.className = "sound-button"
-	b.setAttribute("data-url", args.link)
+	let parrent = document.createElement("div");
+	parrent.className = "sound-button"
+	parrent.setAttribute("data-url", args.link)
 	let but = document.createElement("button")
 	but.innerHTML = "▶"
 	but.className = "play"
 	but.onclick = _=>{
-		b.classList.add("playing")
+		parrent.classList.add("playing")
 		but.disabled = true
 		play_it(args.link)
 	}
 	let title = document.createElement("span")
 	title.innerHTML = args.title
-	b.appendChild(but)
-	b.appendChild(title)
+	parrent.appendChild(but)
+	parrent.appendChild(title)
+	let other = document.createElement("div")
+	other.className = "other"
+
+	if (args.duration){
+		let t = document.createElement("span")
+		t.className = "time"
+		t.innerHTML = args.duration
+		other.appendChild(t)
+	}
 	let fav = document.createElement("button")
 	fav.innerHTML = "⭐️"
 	fav.className = "favorite"
@@ -108,11 +119,11 @@ function addButton(args){
 		fav.innerHTML = "❌"
 		fav.onclick = _=>{
 			eel.delete_sound(args.link)
-			b.classList.add("deleted")
+			parrent.classList.add("deleted")
 			fav.disabled = true
 			but.disabled = true
 			setTimeout(_=>{
-				b.remove()
+				parrent.remove()
 			}, 500)
 		}
 	} else{
@@ -121,14 +132,10 @@ function addButton(args){
 			fav.disabled = true
 		}
 	}
-	b.appendChild(fav)
-	if (args.duration){
-		let t = document.createElement("span")
-		t.className = "time"
-		t.innerHTML = args.duration
-		b.appendChild(t)
-	}
-	area.appendChild(b)
+	other.appendChild(fav)
+
+	parrent.appendChild(other)
+	area.appendChild(parrent)
 }
 function play_it(url){
 	eel.play_sound_url(url)()
@@ -147,7 +154,7 @@ function getSoundDuration(identifier, duration){
 			let t = document.createElement("span")
 			t.className = "time"
 			t.innerHTML = int_to_time(duration)
-			element.append(t)
+			element.querySelector(".other").prepend(t)
 		}
 		setTimeout(function() {
 			element.classList.remove("playing")

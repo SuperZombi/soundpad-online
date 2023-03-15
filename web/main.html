@@ -6,20 +6,30 @@
 	<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-	<span>Input:</span>
-	<select id="input-device">
-		<option value="false">None</option>
-	</select>
-	<br>
-	<span>Output:</span>
-	<select id="output-device"></select>
-	<br>
-	<span>Preview:</span>
-	<input type="checkbox" checked id="enable-preview">
-	<br>
-	<button id="stop_play">Stop</button>
+	<h3 style="text-align: center">Sound Pad Online</h3>
+	<h5 style="text-align: center">Version: <span id="version"></span></h5>
 
-	<br><hr>
+	<div>
+		<div style="margin: 5px;">
+			<span>Input:</span>
+			<select id="input-device">
+				<option value="false">None</option>
+			</select>
+		</div>
+		<div style="margin: 5px;">
+			<span>Output:</span>
+			<select id="output-device"></select>
+		</div>
+		<div style="margin: 5px;">
+			<span>Preview:</span>
+			<input type="checkbox" checked id="enable-preview">
+		</div>
+		<div style="margin: 5px;">
+			<button id="stop_play">Stop</button>
+		</div>
+	</div>
+
+	<hr>
 
 	<span>API:</span>
 		<select id="api">
