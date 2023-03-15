@@ -37,6 +37,12 @@ CHUNK_SIZE = 2048
 permanent_delete = False
 
 
+# ----- subprocess settings -----
+startupinfo = None
+if os.name == 'nt':
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 # --- Settings Functions ----
 @eel.expose
 def get_audio_devices():
@@ -197,7 +203,7 @@ def play_sound(url, identifier=None):
 	global stopPlaying
 	output_file = BytesIO()
 	command = ['ffmpeg', '-i', url, '-f', 'wav', '-']
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
 	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
 		print(stderr)
@@ -252,20 +258,12 @@ def play_sound_url(url, save=False, filename=None):
 	if youtube.findall(url):
 		def convert_youtube(link):
 			url = get_yt_audio(link)["link"]
-			# r = requests.get(url)
-			# f = BytesIO(r.content)
 			if save:
 				save_file(url, filename)
 			else:
 				play_sound(url, link)
 		threading.Thread(target=convert_youtube, args=(url,), daemon=True).start()
 	else:
-		# if os.path.isfile(url):
-		# 	with open(url, "rb") as file:
-		# 		f = BytesIO(file.read())
-		# else:
-		# 	r = requests.get(url)
-		# 	f = BytesIO(r.content)
 		if save:
 			save_file(url, filename)
 		else:
@@ -328,7 +326,7 @@ def save_file(url, filename):
 		return fname
 	target = generate_new_file_name(target)
 	command = ['ffmpeg', '-i', url, "-acodec", "mp3", "-b:a", "128k", '-f', 'mp3', target]
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
 	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
 		print(stderr)
