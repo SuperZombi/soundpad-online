@@ -31,6 +31,7 @@ def resource_path(relative_path):
 def get_version():
 	return __version__
 
+youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))')
 
 CHUNK_SIZE = 2048
 permanent_delete = False
@@ -61,6 +62,7 @@ def get_audio_devices():
 INPUT_DEVICE = False
 OUTPUT_DEVICE = None
 PREVIEW_DEVICE = True
+AUDIO_MAX_DUR = 30 # for youtube
 
 @eel.expose
 def change_input_device(new_device):
@@ -91,13 +93,23 @@ def time_to_int(time_str):
 	total_seconds = 60 * minutes + seconds
 	return total_seconds
 
+def int_to_time(integer):
+	return '{:02}:{:02}'.format(*divmod(integer, 60))
+
+def get_durration(f):
+	metadata = audio_metadata.load(f)
+	return round(metadata.streaminfo.duration)
+
 def get_yt_audio(link):
 	yt = pytube.YouTube(link)
 	stream = yt.streams.filter(only_audio=True, file_extension='mp4').order_by('abr').desc().first()
-	return stream.url
+	return {"title": yt.title, "duration": int_to_time(yt.length), "link": stream.url}
+	
 
 @eel.expose
-def search_youtube(text, limit=100, max_dur=30):
+def search_youtube(text, limit=100, max_dur=AUDIO_MAX_DUR):
+	if youtube.findall(text):
+		return [get_yt_audio(text)]
 	customSearch = CustomSearch(text, VideoDurationFilter.short, limit = limit)
 	filtered_by_time = filter(lambda x: time_to_int(x['duration']) < max_dur, customSearch.result()['result'])
 	new_arr = map(lambda x: {key: x[key] for key in ["title", "duration", "link"]}, filtered_by_time)
@@ -151,7 +163,7 @@ def search_meowpad(text, limit=1):
 		tracks = answer['sounds']
 		tracks = map(lambda x: {
 			"title": x.get("title"),
-			"duration": '{:02}:{:02}'.format(*divmod(x.get("duration"), 60)),
+			"duration": int_to_time(x.get("duration")),
 			"link": f'https://api.meowpad.me/v1/download/{x.get("slug").strip("/")}'
 		}, tracks)
 
@@ -162,9 +174,6 @@ def search_meowpad(text, limit=1):
 
 @eel.expose
 def search_favorites(text):
-	def get_durration(f):
-		metadata = audio_metadata.load(f)
-		return round(metadata.streaminfo.duration)
 	folder = os.path.join(os.getcwd(), "downloads")
 	files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
 	if text:
@@ -173,7 +182,7 @@ def search_favorites(text):
 
 	files = map(lambda x: {
 			"title": os.path.splitext(x)[0],
-			"duration": '{:02}:{:02}'.format(*divmod(get_durration(os.path.join(folder, x)), 60)),
+			"duration": int_to_time(get_durration(os.path.join(folder, x))),
 			"link": os.path.join(folder, x),
 			"local": True
 		}, files)
@@ -184,12 +193,12 @@ def search_favorites(text):
 # --- Play Functions ---------
 stopPlaying = False
 @eel.expose
-def play_sound(file, identifier=None):
+def play_sound(url, identifier=None):
 	global stopPlaying
 	output_file = BytesIO()
-	command = ['ffmpeg', '-i', 'pipe:', '-f', 'wav', '-']
-	proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout, stderr = proc.communicate(input=file.read())
+	command = ['ffmpeg', '-i', url, '-f', 'wav', '-']
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
 		print(stderr)
 	else:
@@ -239,29 +248,28 @@ def stop_play():
 
 @eel.expose
 def play_sound_url(url, save=False, filename=None):
-	youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))')
 	youtubemode = False
 	if youtube.findall(url):
 		def convert_youtube(link):
-			url = get_yt_audio(link)
-			r = requests.get(url)
-			f = BytesIO(r.content)
+			url = get_yt_audio(link)["link"]
+			# r = requests.get(url)
+			# f = BytesIO(r.content)
 			if save:
-				save_file(f, filename)
+				save_file(url, filename)
 			else:
-				play_sound(f, link)
+				play_sound(url, link)
 		threading.Thread(target=convert_youtube, args=(url,), daemon=True).start()
 	else:
-		if os.path.isfile(url):
-			with open(url, "rb") as file:
-				f = BytesIO(file.read())
-		else:
-			r = requests.get(url)
-			f = BytesIO(r.content)
+		# if os.path.isfile(url):
+		# 	with open(url, "rb") as file:
+		# 		f = BytesIO(file.read())
+		# else:
+		# 	r = requests.get(url)
+		# 	f = BytesIO(r.content)
 		if save:
-			save_file(f, filename)
+			save_file(url, filename)
 		else:
-			threading.Thread(target=play_sound, args=(f, url), daemon=True).start()
+			threading.Thread(target=play_sound, args=(url, url), daemon=True).start()
 	
 # -----------------------------
 # --- Microphone Function ----
@@ -306,10 +314,11 @@ def listen_micro():
 
 # -----------------------------
 # --- Storage Functions ------
-def save_file(file, filename):
+def save_file(url, filename):
 	folder = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(folder):
 		os.mkdir(folder)
+	filename = re.sub(r'(?u)[^-\w. ]', '', filename) + ".mp3"
 	target = os.path.join(folder, filename)
 	def generate_new_file_name(fname):
 		if os.path.exists(fname):
@@ -318,17 +327,16 @@ def save_file(file, filename):
 			return generate_new_file_name(new_name)
 		return fname
 	target = generate_new_file_name(target)
-
-	command = ['ffmpeg', '-i', 'pipe:', "-acodec", "copy", '-f', 'mp3', target]
-	proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	stdout, stderr = proc.communicate(input=file.read())
+	command = ['ffmpeg', '-i', url, "-acodec", "mp3", "-b:a", "128k", '-f', 'mp3', target]
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
 		print(stderr)
 
 
 @eel.expose
 def save_sound(url, filename):
-	play_sound_url(url, save=True, filename=filename + ".mp3")
+	play_sound_url(url, save=True, filename=filename)
 
 @eel.expose
 def delete_sound(url):

@@ -35,15 +35,17 @@ document.getElementById("stop_play").onclick = _=>{
 document.getElementById("enable-preview").onchange = _=>{
 	eel.toggle_preview(document.getElementById("enable-preview").checked)();
 }
+
+var search = document.getElementById("search");
+var area = document.getElementById("list-area");
+
 document.getElementById("api").onchange =e=>{
 	if (e.target.value == "favorites"){
+		search.value = ""
 		start_search()
 	}
 }
 
-
-var search = document.getElementById("search");
-var area = document.getElementById("list-area");
 async function start_search(){
 	let api = document.getElementById("api").value;
 	let value = search.value.trim()
@@ -111,7 +113,7 @@ function addButton(args){
 			but.disabled = true
 			setTimeout(_=>{
 				b.remove()
-			}, 1000)
+			}, 500)
 		}
 	} else{
 		fav.onclick = _=>{
