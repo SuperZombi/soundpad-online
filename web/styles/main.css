@@ -61,3 +61,10 @@ input{
 .sound-button .time{
 	float: right;
 }
+
+#tab-content > .tab{
+	display: none;
+}
+#tab-content > .tab.active{
+	display: block;
+}

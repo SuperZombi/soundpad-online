@@ -1,6 +1,7 @@
 (async function(){
 	let version = await eel.get_version()();
 	document.getElementById("version").innerHTML = version;
+	init_tabs()
 	let devices = await eel.get_audio_devices()();
 
 	let input_devices_area = document.getElementById("input-device");
@@ -19,13 +20,41 @@
 	})
 	input_devices_area.onchange = _=>{
 		eel.change_input_device(input_devices_area.value)();
+		eel.save_settings()();
 	}
 	output_devices_area.onchange = _=>{
 		eel.change_output_device(output_devices_area.value)();
+		eel.save_settings()();
 	}
-	eel.change_input_device(input_devices_area.value)();
-	eel.change_output_device(output_devices_area.value)();
+
+	await load_settings();
 })()
+
+function init_tabs(){
+	let content = document.getElementById("tab-content");
+	document.querySelectorAll("#tabs > .tab-title").forEach(tab=>{
+		tab.onclick =_=>{
+			content.querySelectorAll(".tab.active").forEach(e=>{e.classList.remove("active")})
+			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
+		}
+	})
+}
+async function load_settings(){
+	let settings = await eel.get_settings()();
+	Object.keys(settings).forEach(key=>{
+		let val = settings[key];
+		let element = document.querySelector(`.setting[name='${key}']`)
+		if (element.type == "checkbox"){
+			element.checked = val
+		} else{
+			if (val !== null){
+				element.value = val.toString()
+			}
+		}
+	})
+	eel.change_input_device(document.getElementById("input-device").value)();
+	eel.change_output_device(document.getElementById("output-device").value)();
+}
 
 document.getElementById("stop_play").onclick = _=>{
 	eel.stop_play()();
@@ -34,9 +63,21 @@ document.getElementById("stop_play").onclick = _=>{
 		e.querySelector(".play").disabled = false
 	})
 }
-document.getElementById("enable-preview").onchange = _=>{
-	eel.toggle_preview(document.getElementById("enable-preview").checked)();
-}
+document.querySelectorAll(".setting").forEach(e=>{
+	let ignore = ["input_device", "output_device"]
+	if (!ignore.includes(e.name)){
+		e.onchange = _=>{
+			let name = e.name;
+			let value;
+			if (e.type == "checkbox"){
+				value = e.checked
+			} else{
+				value = eval(e.value)
+			}
+			eel.change_setting(name, value)()
+		}	
+	}
+})
 
 var search = document.getElementById("search");
 var area = document.getElementById("list-area");

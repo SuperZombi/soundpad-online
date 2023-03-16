@@ -18,7 +18,7 @@ from fuzzywuzzy import process
 from send2trash import send2trash
 
 
-__version__ = '0.2.0'
+__version__ = '1.0.0'
 
 # ---- Required Functions ----
 
@@ -33,9 +33,13 @@ def get_version():
 
 youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))')
 
+# Settings
+INPUT_DEVICE = False
+OUTPUT_DEVICE = None
+PREVIEW_DEVICE = False
 CHUNK_SIZE = 2048
 permanent_delete = False
-
+AUDIO_MAX_DUR = 30 # for youtube
 
 # ----- subprocess settings -----
 startupinfo = None
@@ -65,10 +69,50 @@ def get_audio_devices():
 			output_dev.append({key: device[key] for key in ["index", "name"]})
 	return {"input": input_dev, "output": output_dev}
 
-INPUT_DEVICE = False
-OUTPUT_DEVICE = None
-PREVIEW_DEVICE = True
-AUDIO_MAX_DUR = 30 # for youtube
+
+# ----- Settings Functions -------
+def load_settings():
+	path = os.path.join(os.getcwd(), "settings.json")
+	if os.path.exists(path):
+		devices = get_audio_devices()
+		def make_dict(arr):
+			devices_dict = {}
+			for i in arr:
+				devices_dict[i['name']] = i['index']
+			return devices_dict
+
+		with open(path, "r", encoding='utf-8') as file:
+			data = json.loads(file.read())
+			for key, val in data.items():
+				if key == "INPUT_DEVICE" and val != False:
+					val = make_dict(devices['input']).get(val)
+				elif key == "OUTPUT_DEVICE" and val != False:
+					val = make_dict(devices['output']).get(val)
+				globals()[key] = val
+load_settings()
+
+@eel.expose
+def save_settings():
+	path = os.path.join(os.getcwd(), "settings.json")
+	devices = get_audio_devices()
+	def make_dict(arr):
+		devices_dict = {}
+		for i in arr:
+			devices_dict[str(i['index'])] = i['name']
+		return devices_dict
+
+	data = {
+		"INPUT_DEVICE": make_dict(devices['input']).get(str(INPUT_DEVICE), False),
+		"OUTPUT_DEVICE": make_dict(devices['output']).get(str(OUTPUT_DEVICE), None),
+		"PREVIEW_DEVICE": PREVIEW_DEVICE,
+		"CHUNK_SIZE": CHUNK_SIZE,
+		"permanent_delete": permanent_delete,
+		"AUDIO_MAX_DUR": AUDIO_MAX_DUR
+	}
+	with open(path, "w", encoding='utf-8') as file:
+		file.write(json.dumps(data, indent=4, ensure_ascii=False))
+
+# -------------------
 
 @eel.expose
 def change_input_device(new_device):
@@ -86,9 +130,20 @@ def change_output_device(new_device):
 	stopRecording = True
 
 @eel.expose
-def toggle_preview(value):
-	global PREVIEW_DEVICE
-	PREVIEW_DEVICE = value
+def change_setting(name, value):
+	globals()[name] = value
+	save_settings()
+
+@eel.expose
+def get_settings():
+	return {
+		"input_device": INPUT_DEVICE,
+		"output_device": OUTPUT_DEVICE,
+		"PREVIEW_DEVICE": PREVIEW_DEVICE,
+		"permanent_delete": permanent_delete,
+		"AUDIO_MAX_DUR": AUDIO_MAX_DUR,
+		"CHUNK_SIZE": CHUNK_SIZE
+	}
 
 
 # --- Search Functions ----
@@ -344,6 +399,7 @@ def delete_sound(url):
 		else:
 			send2trash(url)
 
+# -------------------------
 
 eel.init(resource_path("web"))
 
