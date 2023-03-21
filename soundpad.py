@@ -236,6 +236,8 @@ def search_meowpad(text, limit=1):
 @eel.expose
 def search_favorites(text):
 	folder = os.path.join(os.getcwd(), "downloads")
+	if not os.path.exists(folder):
+		return []
 	files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
 	if text:
 		filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
