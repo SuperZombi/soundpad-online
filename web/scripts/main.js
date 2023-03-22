@@ -56,6 +56,18 @@ async function load_settings(){
 	eel.change_output_device(document.getElementById("output-device").value)();
 }
 
+(async function initVolumer(start=1){
+	let volumer = document.getElementById("volumer")
+	let input = volumer.querySelector("input")
+	let text = volumer.querySelector("[name=value]")
+	input.value = start * 100
+	text.innerHTML = input.value
+	input.oninput = _=>{
+		text.innerHTML = input.value;
+		eel.change_volume(input.value / 100)
+	}
+})()
+
 document.getElementById("stop_play").onclick = _=>{
 	eel.stop_play()();
 	document.querySelectorAll("#list-area > .sound-button.playing").forEach(e=>{

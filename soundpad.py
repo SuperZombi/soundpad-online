@@ -13,12 +13,13 @@ import pytube
 import re
 import subprocess
 import threading
+import numpy as np
 from datetime import timedelta
 from fuzzywuzzy import process
 from send2trash import send2trash
 
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 # ---- Required Functions ----
 
@@ -36,9 +37,10 @@ youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|y
 # Settings
 INPUT_DEVICE = False
 OUTPUT_DEVICE = None
-PREVIEW_DEVICE = False
+PREVIEW_DEVICE = True
 CHUNK_SIZE = 2048
 permanent_delete = False
+VOLUME = 1.0
 AUDIO_MAX_DUR = 30 # for youtube
 
 # ----- subprocess settings -----
@@ -291,9 +293,15 @@ def play_sound(url, identifier=None):
 		while data:
 			if stopPlaying:
 				break
-			stream.write(data)
+
+			datachuck = np.frombuffer(data, np.int16)
+			datachuck = datachuck * VOLUME
+			datachuck = datachuck.astype(np.int16)
+			datachuck = datachuck.tobytes()
+
+			stream.write(datachuck)
 			if stream_preview:
-				stream_preview.write(data)
+				stream_preview.write(datachuck)
 			data = output_file.read(chunk)
 
 		stream.stop_stream()
@@ -308,6 +316,11 @@ def play_sound(url, identifier=None):
 def stop_play():
 	global stopPlaying
 	stopPlaying = True
+
+@eel.expose
+def change_volume(vol):
+	global VOLUME
+	VOLUME = vol
 
 @eel.expose
 def play_sound_url(url, save=False, filename=None):

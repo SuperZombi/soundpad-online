@@ -22,8 +22,14 @@
 				<option value="zvukogram">zvukogram.com</option>
 				<option value="youtube">youtube.com</option>
 			</select>
-			<br>
-			<button id="stop_play" style="margin-top: 8px;">Stop</button>
+
+			<div id="volumer">
+				<span>Volume:</span>
+				<input type="range" min="0" max="100" step="5" value="100">
+				<span name="value"></span>
+			</div>
+
+			<button id="stop_play">Stop</button>
 			<hr>
 			<span>Search:</span><input id="search"><button id="search_but">🔎</button>
 			<br><hr>
@@ -50,7 +56,7 @@
 					</div>
 					<div style="margin: 5px;">
 						<span>Preview:</span>
-						<input type="checkbox" class="setting" name="PREVIEW_DEVICE">
+						<input type="checkbox" class="setting" name="PREVIEW_DEVICE" checked>
 					</div>
 			</fieldset>
 
@@ -71,9 +77,12 @@
 			</p>
 			<p>
 				<span>Chunk size:</span>
-				<select class="setting" name="CHUNK_SIZE">
+				<select class="setting" name="CHUNK_SIZE" style="text-align: right">
+					<option value="1024">256</option>
+					<option value="1024">512</option>
 					<option value="1024">1024</option>
 					<option value="2048">2048</option>
+					<option value="2048">4096</option>
 				</select>
 			</p>
 

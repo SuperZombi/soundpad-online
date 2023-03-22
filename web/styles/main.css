@@ -68,3 +68,20 @@ input{
 #tab-content > .tab.active{
 	display: block;
 }
+
+#volumer{
+	display: flex;
+	align-items: center;
+	margin: 8px 0;
+}
+#volumer > input{
+	cursor: ew-resize;
+}
+#volumer > [name='value']{
+	font-family: monospace;
+	font-size: 0.8em;
+	margin-left: 4px;
+}
+#volumer > [name='value']:after{
+	content: '%';
+}

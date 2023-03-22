@@ -1,6 +1,6 @@
 # Sound Pad Online
 
-<img src="https://shields.io/badge/version-v1.0.0-blue">
+<img src="https://shields.io/badge/version-v1.1.0-blue">
 
 ### Requirements:
 
