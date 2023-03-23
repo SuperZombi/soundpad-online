@@ -8,7 +8,6 @@ import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
 from io import BytesIO
-from youtubesearchpython import *
 import pytube
 import re
 import subprocess
@@ -19,7 +18,7 @@ from fuzzywuzzy import process
 from send2trash import send2trash
 
 
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 # ---- Required Functions ----
 
@@ -170,13 +169,21 @@ def get_yt_audio(link):
 	
 
 @eel.expose
-def search_youtube(text, limit=100, max_dur=AUDIO_MAX_DUR):
+def search_youtube(text, max_dur=AUDIO_MAX_DUR):
 	if youtube.findall(text):
 		return [get_yt_audio(text)]
-	customSearch = CustomSearch(text, VideoDurationFilter.short, limit = limit)
-	filtered_by_time = filter(lambda x: time_to_int(x['duration']) < max_dur, customSearch.result()['result'])
-	new_arr = map(lambda x: {key: x[key] for key in ["title", "duration", "link"]}, filtered_by_time)
-	return list(new_arr)
+	arr = []
+	s = pytube.Search(text)
+	for vid in s.results:
+		try:
+			if vid.length <= max_dur:
+				arr.append({
+					'title': vid.title,
+					'link': vid.watch_url,
+					'duration': int_to_time(vid.length)
+				})
+		except TypeError: None
+	return arr
 
 
 @eel.expose

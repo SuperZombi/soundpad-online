@@ -31,11 +31,14 @@
 })()
 
 function init_tabs(){
+	let tabs = document.querySelector("#tabs")
 	let content = document.getElementById("tab-content");
-	document.querySelectorAll("#tabs > .tab-title").forEach(tab=>{
+	tabs.querySelectorAll(".tab-title").forEach(tab=>{
 		tab.onclick =_=>{
 			content.querySelectorAll(".tab.active").forEach(e=>{e.classList.remove("active")})
 			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
+			tabs.querySelectorAll(".tab-title.active").forEach(e=>{e.classList.remove("active")})
+			tab.classList.add("active")
 		}
 	})
 }

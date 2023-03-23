@@ -6,11 +6,10 @@
 	<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-	<p id="tabs">
-		<button class="tab-title" name="home">Home</button>
+	<div id="tabs">
+		<button class="tab-title active" name="home">Home</button>
 		<button class="tab-title" name="settings">Settings</button>
-	</p>
-	<hr>
+	</div>
 	<div id="tab-content">
 
 		<div class="tab active" name="home">
@@ -54,7 +53,20 @@
 						<span>Output:</span>
 						<select id="output-device" class="setting" name="output_device"></select>
 					</div>
+
 					<div style="margin: 5px;">
+						<span>Chunk size:</span>
+						<select class="setting" name="CHUNK_SIZE" style="text-align: right">
+							<option value="1024">256</option>
+							<option value="1024">512</option>
+							<option value="1024">1024</option>
+							<option value="2048">2048</option>
+							<option value="2048">4096</option>
+						</select>
+					</div>
+
+					<div style="margin: 5px;">
+						<span title="Hear the sounds that are being played" style="cursor: help;">❓</span>
 						<span>Preview:</span>
 						<input type="checkbox" class="setting" name="PREVIEW_DEVICE" checked>
 					</div>
@@ -71,19 +83,9 @@
 				</label>
 			</fieldset>
 
-			<p>
+			<p style="margin-left: 5px;">
 				<span>Audio search max duration (for YouTube)</span>
 				<input name="AUDIO_MAX_DUR" type="number" class="setting" min="1" value="30" style="width: 50px;">
-			</p>
-			<p>
-				<span>Chunk size:</span>
-				<select class="setting" name="CHUNK_SIZE" style="text-align: right">
-					<option value="1024">256</option>
-					<option value="1024">512</option>
-					<option value="1024">1024</option>
-					<option value="2048">2048</option>
-					<option value="2048">4096</option>
-				</select>
 			</p>
 
 		</div>

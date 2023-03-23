@@ -62,6 +62,31 @@ input{
 	float: right;
 }
 
+
+#tabs{
+	margin-left: 10px;
+}
+#tab-content{
+	border: 1px solid;
+	padding: 12px;
+	border-radius: 12px;
+}
+#tabs > .tab-title{
+	background: #f9f9f9;
+	outline: none;
+	border: 1px solid;
+	border-bottom: none;
+	padding: 5px 10px;
+	border-radius: 8px 8px 0 0;
+	transition: 0.15s;
+}
+#tabs > .tab-title:hover{
+	background: #fff;
+}
+#tabs > .tab-title.active{
+	background: #fff;
+	transform: translateY(1px);
+}
 #tab-content > .tab{
 	display: none;
 }
