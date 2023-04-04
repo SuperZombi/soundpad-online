@@ -22,4 +22,4 @@
 
 ### Dracula theme already here
 
-![](github/images/dracula.png)
+![Dracula.png](github/images/dracula_preview.png)
