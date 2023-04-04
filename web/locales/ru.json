@@ -1,0 +1,34 @@
+{
+	"__root__": {
+		"inherit": "en"
+	},
+	"home": "Главная",
+	"version": "Версия:",
+	"settings": "Настройки",
+	"language": "Язык:",
+	"appearance": "Внешний вид",
+	"theme": "Тема:",
+	"light": "Светлая",
+	"dark": "Тёмная",
+	"more_themes": "Больше",
+
+	"volume": "Громкость:",
+	"stop": "Стоп",
+	"search": "Поиск:",
+	"favorites": "Избранное",
+
+	"devices": "Устройства:",
+	"input_device": "Вход:",
+	"output_device": "Выход:",
+	"disable_device": "Отключить",
+	"preview": "Прослушивать:",
+	"preview_tooltip": "Слышать звук, воспроизводимый SoundPad",
+
+	"chunk_size": "Размер чанка:",
+	"chunk_size_tooltip": "Большой размер чанков снижает нагрузку на обработку, но увеличивают задержку.\nМеньший размер чанков уменьшает задержку, но требуют большей вычислительной мощности.",
+
+	"deleting_from_favorites": "Удаление из Избранного:",
+	"to_recycle_bin": "В корзину",
+	"permanent_delete": "Безвозвратно",
+	"audio_max_duration": "Макс. длина аудио (для YouTube) (сек)"
+}

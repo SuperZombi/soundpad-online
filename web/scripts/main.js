@@ -28,6 +28,12 @@
 	}
 
 	await load_settings();
+	initThemes()
+	getTranslation()
+	let tab_now = window.location.hash.split("#").at(-1)
+	if (tab_now){
+		document.querySelector(`#tabs .tab-title[name='${tab_now}']`).click()
+	}
 })()
 
 function init_tabs(){
@@ -39,6 +45,7 @@ function init_tabs(){
 			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
 			tabs.querySelectorAll(".tab-title.active").forEach(e=>{e.classList.remove("active")})
 			tab.classList.add("active")
+			window.location.hash = tab.getAttribute("name")
 		}
 	})
 }
@@ -46,17 +53,43 @@ async function load_settings(){
 	let settings = await eel.get_settings()();
 	Object.keys(settings).forEach(key=>{
 		let val = settings[key];
-		let element = document.querySelector(`.setting[name='${key}']`)
-		if (element.type == "checkbox"){
-			element.checked = val
-		} else{
-			if (val !== null){
-				element.value = val.toString()
+		let arr = document.querySelectorAll(`.setting[name='${key}']`)
+		let element;
+		if (arr.length > 1){
+			element = document.querySelector(`.setting[name='${key}'][value='${val}']`)
+			if (!element){
+				if (key == "theme"){
+					theme_after_load = _=>{
+						let element = document.querySelector(`.setting[name='${key}'][value='${val}']`)
+						if (element){
+							load_one_setting(element, val)
+							element.onchange()
+						}
+					}
+				}
+				return
 			}
+		} else{
+			element = arr[0]
 		}
+
+		load_one_setting(element, val)
 	})
 	eel.change_input_device(document.getElementById("input-device").value)();
 	eel.change_output_device(document.getElementById("output-device").value)();
+}
+function load_one_setting(element, val){
+	if (element.type == "checkbox"){
+		element.checked = val
+	}
+	else if (element.type == "radio"){
+		element.checked = true
+	}
+	else{
+		if (val !== null){
+			element.value = val.toString()
+		}
+	}
 }
 
 (async function initVolumer(start=1){
@@ -81,16 +114,21 @@ document.getElementById("stop_play").onclick = _=>{
 document.querySelectorAll(".setting").forEach(e=>{
 	let ignore = ["input_device", "output_device"]
 	if (!ignore.includes(e.name)){
-		e.onchange = _=>{
+		e.addEventListener("change", _=>{
 			let name = e.name;
 			let value;
 			if (e.type == "checkbox"){
 				value = e.checked
-			} else{
-				value = eval(e.value)
+			}
+			else{
+				if (isNaN(e.value) && e.value != "true" && e.value != "false"){
+					value = e.value
+				} else{
+					value = eval(e.value)
+				}
 			}
 			eel.change_setting(name, value)()
-		}	
+		})
 	}
 })
 

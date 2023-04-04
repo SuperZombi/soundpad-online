@@ -2,8 +2,10 @@ import eel
 import time
 import sys, os
 import requests
+import copy
 from bs4 import BeautifulSoup
 import json
+from json_minify import json_minify
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
@@ -16,9 +18,10 @@ import numpy as np
 from datetime import timedelta
 from fuzzywuzzy import process
 from send2trash import send2trash
+import webbrowser
 
 
-__version__ = '1.2.0'
+__version__ = '2.0.0'
 
 # ---- Required Functions ----
 
@@ -31,16 +34,33 @@ def resource_path(relative_path):
 def get_version():
 	return __version__
 
+@eel.expose
+def get_translation(code):
+	tr_file = os.path.join(resource_path("web"), "locales", code + ".json")
+	if os.path.exists(tr_file):
+		with open(tr_file, 'r', encoding="utf-8") as file:
+			string = json_minify(file.read()) # remove comments
+
+			# remove coma at the end of json
+			regex = r'''(?<=[}\]"']),(?!\s*[{["'])'''
+			string = re.sub(regex, "", string, 0)
+
+			output = json.loads(string)
+			return output
+	return
+
 youtube = re.compile(r'(https?://)?(www\.)?((youtube\.(com))/watch\?v=([-\w]+)|youtu\.be/([-\w]+))')
 
 # Settings
-INPUT_DEVICE = False
-OUTPUT_DEVICE = None
-PREVIEW_DEVICE = True
-CHUNK_SIZE = 2048
-permanent_delete = False
+SETTINGS = {
+	"INPUT_DEVICE": False,
+	"OUTPUT_DEVICE": None,
+	"PREVIEW_DEVICE": True,
+	"CHUNK_SIZE": 2048,
+	"permanent_delete": False,
+	"AUDIO_MAX_DUR": 30, # for youtube
+}
 VOLUME = 1.0
-AUDIO_MAX_DUR = 30 # for youtube
 
 # ----- subprocess settings -----
 startupinfo = None
@@ -73,6 +93,7 @@ def get_audio_devices():
 
 # ----- Settings Functions -------
 def load_settings():
+	global SETTINGS
 	path = os.path.join(os.getcwd(), "settings.json")
 	if os.path.exists(path):
 		devices = get_audio_devices()
@@ -89,7 +110,7 @@ def load_settings():
 					val = make_dict(devices['input']).get(val)
 				elif key == "OUTPUT_DEVICE" and val != False:
 					val = make_dict(devices['output']).get(val)
-				globals()[key] = val
+				SETTINGS[key] = val
 load_settings()
 
 @eel.expose
@@ -102,14 +123,9 @@ def save_settings():
 			devices_dict[str(i['index'])] = i['name']
 		return devices_dict
 
-	data = {
-		"INPUT_DEVICE": make_dict(devices['input']).get(str(INPUT_DEVICE), False),
-		"OUTPUT_DEVICE": make_dict(devices['output']).get(str(OUTPUT_DEVICE), None),
-		"PREVIEW_DEVICE": PREVIEW_DEVICE,
-		"CHUNK_SIZE": CHUNK_SIZE,
-		"permanent_delete": permanent_delete,
-		"AUDIO_MAX_DUR": AUDIO_MAX_DUR
-	}
+	data = copy.deepcopy(SETTINGS)
+	data["INPUT_DEVICE"] = make_dict(devices['input']).get(str(SETTINGS["INPUT_DEVICE"]), False)
+	data["OUTPUT_DEVICE"] = make_dict(devices['output']).get(str(SETTINGS["OUTPUT_DEVICE"]), False)
 	with open(path, "w", encoding='utf-8') as file:
 		file.write(json.dumps(data, indent=4, ensure_ascii=False))
 
@@ -117,35 +133,89 @@ def save_settings():
 
 @eel.expose
 def change_input_device(new_device):
-	global INPUT_DEVICE, stopRecording
+	global SETTINGS, stopRecording
 	if new_device == "false":
-		INPUT_DEVICE = False
+		SETTINGS["INPUT_DEVICE"] = False
 	else:
-		INPUT_DEVICE = int(new_device)
+		SETTINGS["INPUT_DEVICE"] = int(new_device)
 	stopRecording = True
 
 @eel.expose
 def change_output_device(new_device):
-	global OUTPUT_DEVICE, stopRecording
-	OUTPUT_DEVICE = int(new_device)
+	global SETTINGS, stopRecording
+	SETTINGS["OUTPUT_DEVICE"] = int(new_device)
 	stopRecording = True
 
 @eel.expose
 def change_setting(name, value):
-	globals()[name] = value
+	global SETTINGS
+	SETTINGS[name] = value
 	save_settings()
 
 @eel.expose
 def get_settings():
-	return {
-		"input_device": INPUT_DEVICE,
-		"output_device": OUTPUT_DEVICE,
-		"PREVIEW_DEVICE": PREVIEW_DEVICE,
-		"permanent_delete": permanent_delete,
-		"AUDIO_MAX_DUR": AUDIO_MAX_DUR,
-		"CHUNK_SIZE": CHUNK_SIZE
-	}
+	return SETTINGS
 
+# -------------------
+
+@eel.expose
+def get_local_themes():
+	path = os.path.join(os.getcwd(), "themes")
+	if os.path.exists(path):
+		onlyfiles = [os.path.join(path, f) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+		styleshits = list(filter(lambda x: x.endswith(".css"), onlyfiles))
+		themes = []
+		for file in styleshits:
+			with open(file, encoding="utf-8") as f:
+				text = f.read()
+			arr = text.strip("/*").split("*/")
+			if len(arr) > 1:
+				try:
+					config = json.loads(arr[0])
+				except:
+					continue
+
+				config["css"] = text
+				themes.append(config)
+		return themes				
+	return []
+
+@eel.expose
+def get_web_themes():
+	url = "https://api.github.com/repos/SuperZombi/soundpad-online/git/trees/main?recursive=1"
+	r = requests.get(url)
+	data = r.json().get("tree")
+	filtered = list(filter(lambda x: "github/themes" in x["path"] and x['path'].endswith(".css"), data))
+	root_path = "https://raw.githubusercontent.com/SuperZombi/soundpad-online/main/"
+	themes = []
+	for i in filtered:
+		path = os.path.join(root_path, i["path"])
+		os.path.basename(path)
+
+		rq = requests.get(path)
+		text = rq.text
+		arr = text.strip("/*").split("*/")
+		if len(arr) > 1:
+			try:
+				config = json.loads(arr[0])
+			except:
+				continue
+
+		config["css"] = text
+		themes.append(config)
+	return themes
+
+@eel.expose
+def open_themes_dir():
+	url = "https://github.com/SuperZombi/soundpad-online/tree/main/github/themes"
+	webbrowser.open_new(url)
+
+	path = os.path.join(os.getcwd(), "themes")
+	if not os.path.exists(path):
+		os.mkdir(path)
+	os.system(f'explorer "{path}"')
+
+# -------------------
 
 # --- Search Functions ----
 def time_to_int(time_str):
@@ -169,7 +239,7 @@ def get_yt_audio(link):
 	
 
 @eel.expose
-def search_youtube(text, max_dur=AUDIO_MAX_DUR):
+def search_youtube(text, max_dur=SETTINGS["AUDIO_MAX_DUR"]):
 	if youtube.findall(text):
 		return [get_yt_audio(text)]
 	arr = []
@@ -285,17 +355,17 @@ def play_sound(url, identifier=None):
 		stream = p.open(format=pyaudio.paInt16,
 					  channels=metadata.streaminfo.channels,
 					  rate=metadata.streaminfo.sample_rate,
-					  output_device_index=OUTPUT_DEVICE,
+					  output_device_index=SETTINGS["OUTPUT_DEVICE"],
 					  output=True)
 
 		stream_preview = None
-		if PREVIEW_DEVICE:
+		if SETTINGS["PREVIEW_DEVICE"]:
 			stream_preview = p.open(format=pyaudio.paInt16,
 					  channels=metadata.streaminfo.channels,
 					  rate=metadata.streaminfo.sample_rate,
 					  output=True)
 
-		chunk = CHUNK_SIZE
+		chunk = SETTINGS["CHUNK_SIZE"]
 		data = output_file.read(chunk)
 		while data:
 			if stopPlaying:
@@ -351,21 +421,21 @@ def play_sound_url(url, save=False, filename=None):
 stopRecording = False
 def listen_micro():
 	global stopRecording
-	if INPUT_DEVICE != False:
+	if SETTINGS["INPUT_DEVICE"] != False:
 		p = pyaudio.PyAudio()
 
 		input_stream = p.open(format=pyaudio.paInt16,
 					  channels=1,
 					  rate=44100,
-					  input_device_index=INPUT_DEVICE,
+					  input_device_index=SETTINGS["INPUT_DEVICE"],
 					  input=True)
 		output_stream = p.open(format=pyaudio.paInt16,
 					  channels=1,
 					  rate=44100,
-					  output_device_index=OUTPUT_DEVICE,
+					  output_device_index=SETTINGS["OUTPUT_DEVICE"],
 					  output=True)
 
-		chunk = CHUNK_SIZE
+		chunk = SETTINGS["CHUNK_SIZE"]
 		input_stream.start_stream()
 		while input_stream.is_active():
 			data = input_stream.read(chunk)
@@ -416,7 +486,7 @@ def save_sound(url, filename):
 @eel.expose
 def delete_sound(url):
 	if os.path.exists(url):
-		if permanent_delete:
+		if SETTINGS["permanent_delete"]:
 			os.remove(url)
 		else:
 			send2trash(url)

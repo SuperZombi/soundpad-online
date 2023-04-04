@@ -1,0 +1,13 @@
+:root{
+	--body-color: #1d1e22;
+	--text-color: white;
+	--not-active: grey;
+	--scroll-bar: #555;
+}
+
+input[type="text"], input[type="number"]{
+	border: 2px solid #404040;
+}
+#tabs > .tab-title{
+	background: rgb(16, 16, 20);
+}

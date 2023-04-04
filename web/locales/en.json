@@ -1,0 +1,32 @@
+{
+	"home": "Home",
+	"settings": "Settings",
+	"version": "Version:",
+
+	"language": "Language:",
+	"appearance": "Appearance",
+	"theme": "Theme:",
+	"light": "Light",
+	"dark": "Dark",
+	"more_themes": "More",
+
+	"volume": "Volume:",
+	"stop": "Stop",
+	"search": "Search:",
+	"favorites": "Favorites",
+
+	"devices": "Devices:",
+	"input_device": "Input:",
+	"output_device": "Output:",
+	"disable_device": "Disable",
+	"preview": "Pre-listening:",
+	"preview_tooltip": "Hear sounds played by SoundPad",
+
+	"chunk_size": "Chunk size:",
+	"chunk_size_tooltip": "Larger chunk sizes reduce processing overhead, but increase latency.\nSmaller chunk sizes reduce latency but require more processing power.",
+
+	"deleting_from_favorites": "Deleting from Favorites:",
+	"to_recycle_bin": "To Recycle Bin",
+	"permanent_delete": "Permanent",
+	"audio_max_duration": "Audio max duration (for YouTube) (sec)"
+}
