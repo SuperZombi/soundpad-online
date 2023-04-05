@@ -1,5 +1,8 @@
 # Sound Pad Online
 
+<a href="#support-project"><img src="https://shields.io/badge/support_project-lime" align="right"></a>
+
+
 <img src="https://shields.io/badge/version-v2.0.0-blue">
 
 ### Requirements:
@@ -23,3 +26,17 @@
 ### Dracula theme already here
 
 ![Dracula.png](github/images/dracula_preview.png)
+
+<hr>
+
+### Support project
+
+You can help with:
+* [Translations](https://github.com/SuperZombi/GICutscenesUI/blob/main/translations.md)
+* [Themes](https://github.com/SuperZombi/soundpad-online/tree/main/github/themes)
+* Other (Programming)
+
+#### 💲Or you can support financially💲:
+(But now it's better to email me and I'll send you the details)
+* [Donatello](https://donatello.to/super_zombi)
+* [DonationAlerts](https://www.donationalerts.com/r/super_zombi)
