@@ -33,7 +33,7 @@
 
 You can help with:
 * [Translations](github/translations.md)
-* [Themes](https://github.com/SuperZombi/soundpad-online/tree/main/github/themes)
+* [Themes](github/themes.md)
 * Make app icon
 * Other (Programming)
 
