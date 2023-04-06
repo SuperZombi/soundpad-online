@@ -7,8 +7,10 @@ async function initThemes(){
 	})
 	await loadLocalThemes()
 	theme_after_load()
-	await loadWebThemes()
-	theme_after_load()
+	if (document.querySelector(".setting[name=web_themes]").checked){
+		await loadWebThemes()
+		theme_after_load()
+	}
 }
 function changeTheme(){
 	let el = document.querySelector(".setting[name='theme']:checked")
@@ -54,7 +56,8 @@ async function loadTheme(config){
 	element.innerHTML = `
 		<input class="setting" name="theme" type="radio" value="${config.name}" url="${file}">
 		<img draggable="false" src="${config.image}">
-		<span>${config.name}</span>
+		<span class="theme-name">${config.name}</span>
+		${config.author && `<span class="author">${config.author}</span>`}
 	`
 	document.querySelector(".themes").appendChild(element)
 	element.querySelector("input").onchange = _=>{

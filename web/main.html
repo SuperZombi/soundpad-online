@@ -97,25 +97,32 @@
 
 				<hr>
 
-				<div class="themes">
-					<span translation="__theme__">Theme:</span>
+				<div>
+					<div class="themes">
+						<span translation="__theme__">Theme:</span>
 
-					<label class="theme">
-						<input class="setting" name="theme" type="radio" value="light" url="" checked>
-						<img draggable="false" src="themes/light.png">
-						<span translation="__light__">Light</span>
-					</label>
+						<label class="theme">
+							<input class="setting" name="theme" type="radio" value="light" url="" checked>
+							<img draggable="false" src="themes/light.png">
+							<span class="theme-name" translation="__light__">Light</span>
+						</label>
 
-					<label class="theme">
-						<input class="setting" name="theme" type="radio" value="dark" url="themes/dark.css">
-						<img draggable="false" src="themes/dark.png">
-						<span translation="__dark__">Dark</span>
-					</label>
+						<label class="theme">
+							<input class="setting" name="theme" type="radio" value="dark" url="themes/dark.css">
+							<img draggable="false" src="themes/dark.png">
+							<span class="theme-name" translation="__dark__">Dark</span>
+						</label>
 
-					<a class="theme" onclick="eel.open_themes_dir()" style="order: 2;">
-						<img draggable="false" src="themes/plus.png">
-						<span translation="__more_themes__">More</span>
-					</a>
+						<a class="theme" onclick="eel.open_themes_dir()" style="order: 2;">
+							<img draggable="false" src="themes/plus.png">
+							<span translation="__more_themes__">More</span>
+						</a>
+					</div>
+
+					<div>
+						<span>Web themes</span>
+						<input type="checkbox" class="setting" name="web_themes" checked>
+					</div>
 				</div>
 			</fieldset>
 

@@ -42,6 +42,7 @@ button{
 	font-size: 12pt;
 	background: var(--body-color);
 	color: var(--text-color);
+	border-radius: 6px;
 }
 select{
 	font-size: 13pt;
@@ -54,10 +55,12 @@ input{
 	background: var(--body-color);
 	color: var(--text-color);
 	accent-color: var(--accent-color);
+	border-radius: 6px;
 }
 fieldset{
 	border-radius: 6px;
 	margin: 10px 0;
+	min-width: 0;
 }
 fieldset > div{
 	margin: 10px 0;
@@ -176,20 +179,22 @@ fieldset > div{
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	max-width: 88vw;
 	overflow: auto;
-	padding-top: 3px;
+	padding: 3px;
 }
 .themes > .theme{
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 5px;
 	user-select: none;
 	cursor: pointer;
 	color: inherit;
 	text-decoration: none;
 	position: relative;
+	align-self: flex-start;
+	min-width: 100px;
+	max-width: 100px;
+	word-break: break-word;
 }
 .themes > .theme::after{
 	content: '';
@@ -204,11 +209,26 @@ fieldset > div{
 	content: '🌐';
 }
 .themes > .theme img{
+	min-width: 90px;
+	max-width: 100px;
 	height: 100px;
-	width: 90px;
 	border-radius: 6px;
 	background: rgb(150, 150, 150, 0.25);
 	object-fit: contain;
+	margin-bottom: 5px;
+}
+.themes > .theme span{
+	text-align: center;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2; 
+	-webkit-box-orient: vertical;
+}
+.themes > .theme > .author{
+	font-size: 0.7em;
+	opacity: 0.7;
+	font-family: monospace;
 }
 .themes > .theme input[type="radio"]{
 	display: none;
