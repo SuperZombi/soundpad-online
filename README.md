@@ -3,7 +3,7 @@
 <a href="#support-project"><img src="https://shields.io/badge/support_project-2ea043" align="right"></a>
 
 
-<img src="https://shields.io/badge/version-v2.0.0-blue">
+<img src="https://shields.io/badge/version-v2.0.1-blue">
 
 ### Requirements:
 
@@ -34,6 +34,7 @@
 You can help with:
 * [Translations](https://github.com/SuperZombi/GICutscenesUI/blob/main/translations.md)
 * [Themes](https://github.com/SuperZombi/soundpad-online/tree/main/github/themes)
+* Make app icon
 * Other (Programming)
 
 #### 💲Or you can support financially💲:
