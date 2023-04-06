@@ -32,7 +32,7 @@
 ### Support project
 
 You can help with:
-* [Translations](https://github.com/SuperZombi/GICutscenesUI/blob/main/translations.md)
+* [Translations](github/translations.md)
 * [Themes](https://github.com/SuperZombi/soundpad-online/tree/main/github/themes)
 * Make app icon
 * Other (Programming)
