@@ -57,6 +57,9 @@ input{
 	accent-color: var(--accent-color);
 	border-radius: 6px;
 }
+input[type="checkbox"]{
+	vertical-align: middle;
+}
 fieldset{
 	border-radius: 6px;
 	margin: 10px 0;

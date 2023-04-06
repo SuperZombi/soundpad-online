@@ -11,6 +11,7 @@
 	"light": "Светлая",
 	"dark": "Тёмная",
 	"more_themes": "Больше",
+	"web_themes": "Онлайн темы",
 
 	"volume": "Громкость:",
 	"stop": "Стоп",
@@ -30,5 +31,6 @@
 	"deleting_from_favorites": "Удаление из Избранного:",
 	"to_recycle_bin": "В корзину",
 	"permanent_delete": "Безвозвратно",
-	"audio_max_duration": "Макс. длина аудио (для YouTube) (сек)"
+	"audio_max_duration": "Макс. длина аудио (для YouTube) (сек)",
+	"nothing_found": "Ничего не найдено"
 }

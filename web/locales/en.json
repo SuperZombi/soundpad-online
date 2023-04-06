@@ -9,6 +9,7 @@
 	"light": "Light",
 	"dark": "Dark",
 	"more_themes": "More",
+	"web_themes": "Online themes",
 
 	"volume": "Volume:",
 	"stop": "Stop",
@@ -28,5 +29,6 @@
 	"deleting_from_favorites": "Deleting from Favorites:",
 	"to_recycle_bin": "To Recycle Bin",
 	"permanent_delete": "Permanent",
-	"audio_max_duration": "Audio max duration (for YouTube) (sec)"
+	"audio_max_duration": "Audio max duration (for YouTube) (sec)",
+	"nothing_found": "Nothing found"
 }

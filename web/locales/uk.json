@@ -1,0 +1,36 @@
+{
+	"__root__": {
+		"inherit": "ru"
+	},
+	"home": "Головна",
+	"version": "Версія:",
+	"settings": "Налаштування",
+	"language": "Мова:",
+	"appearance": "Зовнішній вигляд",
+	"theme": "Тема:",
+	"light": "Світла",
+	"dark": "Темна",
+	"more_themes": "Більше",
+	"web_themes": "Онлайн теми",
+
+	"volume": "Гучність:",
+	"stop": "Стоп",
+	"search": "Пошук:",
+	"favorites": "Обране",
+
+	"devices": "Пристрої:",
+	"input_device": "Вхід:",
+	"output_device": "Вихід:",
+	"disable_device": "Вимкнути",
+	"preview": "Прослуховувати:",
+	"preview_tooltip": "Чути звук, який грає SoundPad",
+
+	"chunk_size": "Розмір чанку:",
+	"chunk_size_tooltip": "Великий розмір чанків знижує навантаження на обробку, але збільшує затримку.\nМенший розмір чанків зменшує затримку, але потребує більшої обчислювальної потужності.",
+
+	"deleting_from_favorites": "Видалення з Обраного:",
+	"to_recycle_bin": "В кошик",
+	"permanent_delete": "Назавжди",
+	"audio_max_duration": "Макс. тривалість аудіо (для YouTube) (сек)",
+	"nothing_found": "Нічого не знайдено"
+}

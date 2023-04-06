@@ -29,11 +29,12 @@
 
 	await load_settings();
 	initThemes()
-	getTranslation()
+	await getTranslation()
 	let tab_now = window.location.hash.split("#").at(-1)
 	if (tab_now){
 		document.querySelector(`#tabs .tab-title[name='${tab_now}']`).click()
 	}
+	start_search()
 })()
 
 function init_tabs(){
@@ -165,7 +166,7 @@ async function start_search(){
 		results = await eel.search_meowpad(value)();
 	}
 	if (results.length == 0){
-		area.innerHTML = "Nothing found"
+		area.innerHTML = LANG("nothing_found")
 	} else{
 		results.forEach(e=>{
 			addButton(e)
@@ -178,7 +179,6 @@ document.getElementById("search").onkeydown = (e)=>{
 		start_search()
 	}
 }
-start_search() // onload
 
 
 function addButton(args){

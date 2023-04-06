@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="styles/main.css">
 	<script src="scripts/language.js" defer></script>
 	<script src="scripts/theme.js" defer></script>
+	<script src="scripts/main.js" defer></script>
 </head>
 <body>
 	<div id="tabs">
@@ -92,6 +93,7 @@
 					<select class="setting" name="language" onchange="getTranslation()">
 						<option value="en" selected>English</option>
 						<option value="ru">Русский</option>
+						<option value="uk">Українська</option>
 					</select>
 				</div>
 
@@ -120,7 +122,7 @@
 					</div>
 
 					<div>
-						<span>Web themes</span>
+						<span translation="__web_themes__">Web themes</span>
 						<input type="checkbox" class="setting" name="web_themes" checked>
 					</div>
 				</div>
@@ -147,10 +149,5 @@
 		</div>
 
 	</div>
-
-	
-
-
-<script src="scripts/main.js" defer></script>
 </body>
 </html>
