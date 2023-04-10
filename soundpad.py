@@ -21,7 +21,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.0.2'
+__version__ = '2.0.3'
 
 # ---- Required Functions ----
 
