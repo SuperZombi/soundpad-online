@@ -9,6 +9,7 @@ from json_minify import json_minify
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
+import librosa.effects
 from io import BytesIO
 import pytube
 import re
@@ -21,7 +22,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.0.2'
+__version__ = '2.1.0'
 
 # ---- Required Functions ----
 
@@ -61,6 +62,11 @@ SETTINGS = {
 	"AUDIO_MAX_DUR": 30, # for youtube
 }
 VOLUME = 1.0
+
+VOICE_MOD = {
+	"child": 8,
+	"man": -5
+}
 
 # ----- subprocess settings -----
 startupinfo = None
@@ -151,7 +157,7 @@ def change_setting(name, value):
 	global SETTINGS, stopRecording
 	SETTINGS[name] = value
 	save_settings()
-	if name == "CHUNK_SIZE":
+	if name == "CHUNK_SIZE" or name == "voice_mod":
 		stopRecording = True
 
 @eel.expose
@@ -417,7 +423,7 @@ def play_sound_url(url, save=False, filename=None):
 			save_file(url, filename)
 		else:
 			threading.Thread(target=play_sound, args=(url, url), daemon=True).start()
-	
+
 # -----------------------------
 # --- Microphone Function ----
 stopRecording = False
@@ -426,30 +432,35 @@ def listen_micro():
 	if SETTINGS["INPUT_DEVICE"] != False:
 		p = pyaudio.PyAudio()
 
-		input_stream = p.open(format=pyaudio.paInt16,
+		def pitch_shift_callback(in_data, frame_count, time_info, status):
+			if SETTINGS["voice_mod"]:
+				pitch_value = VOICE_MOD[SETTINGS["voice_mod"]]
+				audio_data = np.frombuffer(in_data, dtype=np.float32)
+				shifted_audio_data = librosa.effects.pitch_shift(audio_data, sr=44100, n_steps=pitch_value)
+				out_data = shifted_audio_data.tobytes()
+				return (out_data, pyaudio.paContinue)
+			return (in_data, pyaudio.paContinue)
+
+		input_stream = p.open(format=pyaudio.paFloat32,
 					  channels=1,
 					  rate=44100,
 					  input_device_index=SETTINGS["INPUT_DEVICE"],
-					  input=True)
-		output_stream = p.open(format=pyaudio.paInt16,
-					  channels=1,
-					  rate=44100,
 					  output_device_index=SETTINGS["OUTPUT_DEVICE"],
-					  output=True)
+					  input=True,
+					  output=True,
+					  stream_callback=pitch_shift_callback,
+					  frames_per_buffer=SETTINGS["CHUNK_SIZE"]*2 if SETTINGS["voice_mod"] else SETTINGS["CHUNK_SIZE"])
 
 		chunk = SETTINGS["CHUNK_SIZE"]
 		input_stream.start_stream()
 		while input_stream.is_active():
-			data = input_stream.read(chunk)
-			output_stream.write(data)
+			time.sleep(0.5)
 			if stopRecording:
 				stopRecording = False
 				break
 
 		input_stream.stop_stream()
 		input_stream.close()
-		output_stream.stop_stream()
-		output_stream.close()
 		p.terminate()
 	else:
 		while not stopRecording:

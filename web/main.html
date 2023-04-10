@@ -75,11 +75,12 @@
 					<div>
 						<span translation="__chunk_size__">Chunk size:</span>
 						<select class="setting" name="CHUNK_SIZE" style="text-align: right">
-							<option value="1024">256</option>
-							<option value="1024">512</option>
+							<option value="256">256</option>
+							<option value="512">512</option>
 							<option value="1024">1024</option>
 							<option value="2048">2048</option>
-							<option value="2048">4096</option>
+							<option value="4096">4096</option>
+							<option value="8192">8192</option>
 						</select>
 						<span translation="__title:chunk_size_tooltip__" title="Larger chunk sizes reduce processing overhead, but increase latency.&#013;Smaller chunk sizes reduce latency but require more processing power" style="cursor: help;">❓</span>
 					</div>
@@ -116,7 +117,7 @@
 						</label>
 
 						<a class="theme" onclick="eel.open_themes_dir()" style="order: 2;">
-							<img draggable="false" src="themes/plus.png">
+							<img draggable="false" src="images/plus.svg">
 							<span translation="__more_themes__">More</span>
 						</a>
 					</div>
@@ -125,6 +126,30 @@
 						<span translation="__web_themes__">Web themes</span>
 						<input type="checkbox" class="setting" name="web_themes" checked>
 					</div>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Voice Mod</legend>
+
+				<div class="themes">
+					<label class="theme">
+						<input class="setting" name="voice_mod" type="radio" value="false" checked>
+						<img draggable="false" src="images/disabled.svg">
+						<span class="theme-name" translation="__disable_device__">Disable</span>
+					</label>
+
+					<label class="theme">
+						<input class="setting" name="voice_mod" type="radio" value="child">
+						<img draggable="false" src="images/child.png">
+						<span class="theme-name">Child</span>
+					</label>
+
+					<label class="theme">
+						<input class="setting" name="voice_mod" type="radio" value="man">
+						<img draggable="false" src="images/man.png">
+						<span class="theme-name">Man</span>
+					</label>
 				</div>
 			</fieldset>
 
