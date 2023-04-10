@@ -9,7 +9,7 @@ from json_minify import json_minify
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
-import librosa.effects
+from librosa.effects import pitch_shift
 from io import BytesIO
 import pytube
 import re
@@ -436,7 +436,7 @@ def listen_micro():
 			if SETTINGS["voice_mod"]:
 				pitch_value = VOICE_MOD[SETTINGS["voice_mod"]]
 				audio_data = np.frombuffer(in_data, dtype=np.float32)
-				shifted_audio_data = librosa.effects.pitch_shift(audio_data, sr=44100, n_steps=pitch_value)
+				shifted_audio_data = pitch_shift(audio_data, sr=44100, n_steps=pitch_value)
 				out_data = shifted_audio_data.tobytes()
 				return (out_data, pyaudio.paContinue)
 			return (in_data, pyaudio.paContinue)
