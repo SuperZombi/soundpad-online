@@ -3,7 +3,7 @@
 <a href="#support-project"><img src="https://shields.io/badge/support_project-2ea043" align="right"></a>
 
 
-<img src="https://shields.io/badge/version-v2.0.2-blue">
+<img src="https://shields.io/badge/version-v2.1.0-blue">
 
 ### Requirements:
 
