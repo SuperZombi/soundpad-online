@@ -27,6 +27,10 @@
 
 ![Dracula.png](github/images/dracula_preview.png)
 
+### Change your voice with VoiceMod
+
+![Dracula.png](github/images/voicemod.png)
+
 <hr>
 
 ### Support project
