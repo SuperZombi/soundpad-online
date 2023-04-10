@@ -148,9 +148,11 @@ def change_output_device(new_device):
 
 @eel.expose
 def change_setting(name, value):
-	global SETTINGS
+	global SETTINGS, stopRecording
 	SETTINGS[name] = value
 	save_settings()
+	if name == "CHUNK_SIZE":
+		stopRecording = True
 
 @eel.expose
 def get_settings():
