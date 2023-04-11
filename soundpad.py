@@ -433,7 +433,7 @@ def listen_micro():
 		p = pyaudio.PyAudio()
 
 		def pitch_shift_callback(in_data, frame_count, time_info, status):
-			if SETTINGS["voice_mod"]:
+			if SETTINGS.get("voice_mod"):
 				pitch_value = VOICE_MOD[SETTINGS["voice_mod"]]
 				audio_data = np.frombuffer(in_data, dtype=np.float32)
 				shifted_audio_data = pitch_shift(audio_data, sr=44100, n_steps=pitch_value)
@@ -449,7 +449,7 @@ def listen_micro():
 					  input=True,
 					  output=True,
 					  stream_callback=pitch_shift_callback,
-					  frames_per_buffer=SETTINGS["CHUNK_SIZE"]*2 if SETTINGS["voice_mod"] else SETTINGS["CHUNK_SIZE"])
+					  frames_per_buffer=SETTINGS["CHUNK_SIZE"]*2 if SETTINGS.get("voice_mod") else SETTINGS["CHUNK_SIZE"])
 
 		chunk = SETTINGS["CHUNK_SIZE"]
 		input_stream.start_stream()
