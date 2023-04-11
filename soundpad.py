@@ -9,7 +9,8 @@ from json_minify import json_minify
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
-from librosa.effects import pitch_shift
+# from librosa.effects import pitch_shift
+from pitch_shifter import *
 from io import BytesIO
 import pytube
 import re
@@ -22,7 +23,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.1.1'
+__version__ = '2.2.0'
 
 # ---- Required Functions ----
 
