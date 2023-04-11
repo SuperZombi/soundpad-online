@@ -76,8 +76,6 @@ async function load_settings(){
 
 		load_one_setting(element, val)
 	})
-	eel.change_input_device(document.getElementById("input-device").value)();
-	eel.change_output_device(document.getElementById("output-device").value)();
 }
 function load_one_setting(element, val){
 	if (element.type == "checkbox"){

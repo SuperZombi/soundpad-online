@@ -22,7 +22,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 # ---- Required Functions ----
 
@@ -157,7 +157,7 @@ def change_setting(name, value):
 	global SETTINGS, stopRecording
 	SETTINGS[name] = value
 	save_settings()
-	if name == "CHUNK_SIZE" or name == "voice_mod":
+	if name == "CHUNK_SIZE":
 		stopRecording = True
 
 @eel.expose
@@ -449,7 +449,7 @@ def listen_micro():
 					  input=True,
 					  output=True,
 					  stream_callback=pitch_shift_callback,
-					  frames_per_buffer=SETTINGS["CHUNK_SIZE"]*2 if SETTINGS.get("voice_mod") else SETTINGS["CHUNK_SIZE"])
+					  frames_per_buffer=SETTINGS["CHUNK_SIZE"])
 
 		chunk = SETTINGS["CHUNK_SIZE"]
 		input_stream.start_stream()
