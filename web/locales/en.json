@@ -26,6 +26,7 @@
 	"chunk_size": "Chunk size:",
 	"chunk_size_tooltip": "Larger chunk sizes reduce processing overhead, but increase latency.\nSmaller chunk sizes reduce latency but require more processing power.",
 
+	"open_favorites": "Open Favorites",
 	"deleting_from_favorites": "Deleting from Favorites:",
 	"to_recycle_bin": "To Recycle Bin",
 	"permanent_delete": "Permanent",

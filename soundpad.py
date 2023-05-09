@@ -23,7 +23,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.2.0'
+__version__ = '2.2.1'
 
 # ---- Required Functions ----
 
@@ -220,6 +220,13 @@ def open_themes_dir():
 	webbrowser.open_new(url)
 
 	path = os.path.join(os.getcwd(), "themes")
+	if not os.path.exists(path):
+		os.mkdir(path)
+	os.system(f'explorer "{path}"')
+
+@eel.expose
+def open_favorites_dir():
+	path = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(path):
 		os.mkdir(path)
 	os.system(f'explorer "{path}"')
