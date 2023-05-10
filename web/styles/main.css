@@ -92,6 +92,7 @@ fieldset > div{
 }
 #list-area{
 	text-align: center;
+	overflow: auto;
 }
 .sound-button{
 	text-align: left;

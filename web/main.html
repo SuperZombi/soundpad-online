@@ -16,29 +16,33 @@
 	<div id="tab-content">
 
 		<div class="tab active" name="home">
-			<span>API:</span>
-			<select id="api">
-				<option value="favorites" translation="__favorites__">favorites</option>
-				<option value="meowpad">meowpad.me</option>
-				<option value="myinstants">myinstants.com</option>
-				<option value="zvukogram">zvukogram.com</option>
-				<option value="youtube">youtube.com</option>
-			</select>
+			<div style="max-height: calc(100vh - 75px); display: flex; flex-direction: column;">
+				<div>
+					<span>API:</span>
+					<select id="api">
+						<option value="favorites" translation="__favorites__">favorites</option>
+						<option value="meowpad">meowpad.me</option>
+						<option value="myinstants">myinstants.com</option>
+						<option value="zvukogram">zvukogram.com</option>
+						<option value="youtube">youtube.com</option>
+					</select>
 
-			<div id="volumer">
-				<span translation="__volume__">Volume:</span>
-				<input type="range" min="0" max="100" step="5" value="100">
-				<span name="value"></span>
+					<div id="volumer">
+						<span translation="__volume__">Volume:</span>
+						<input type="range" min="0" max="100" step="5" value="100">
+						<span name="value"></span>
+					</div>
+
+					<button id="stop_play" translation="__stop__">Stop</button>
+					<hr>
+					<div style="display: flex; gap: 5px;">
+						<span translation="__search__">Search:</span><input id="search" type="text"><button id="search_but">🔎</button>
+					</div>
+					<hr>
+				</div>
+
+				<div id="list-area"></div>
 			</div>
-
-			<button id="stop_play" translation="__stop__">Stop</button>
-			<hr>
-			<div style="display: flex; gap: 5px;">
-				<span translation="__search__">Search:</span><input id="search" type="text"><button id="search_but">🔎</button>
-			</div>
-			<hr>
-
-			<div id="list-area"></div>
 		</div>
 
 

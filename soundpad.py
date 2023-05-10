@@ -1,6 +1,7 @@
 import eel
 import time
 import sys, os
+import glob
 import requests
 import copy
 from bs4 import BeautifulSoup
@@ -23,7 +24,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.2.1'
+__version__ = '2.2.2'
 
 # ---- Required Functions ----
 
@@ -333,18 +334,19 @@ def search_favorites(text):
 	folder = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(folder):
 		return []
-	files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+	files = [f for f in glob.glob(os.path.join(folder, '**', '*.*'), recursive=True) if os.path.isfile(os.path.join(folder, f))]
 	if text:
 		filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
 		files = list(map(lambda x: x[0], filtered))
 
 	files = map(lambda x: {
-			"title": os.path.splitext(x)[0],
-			"duration": int_to_time(get_durration(os.path.join(folder, x))),
-			"link": os.path.join(folder, x),
+			"title": os.path.splitext(os.path.basename(x))[0],
+			"duration": int_to_time(get_durration(x)),
+			"link": x,
+			"time": int(os.path.getmtime(x)),
 			"local": True
 		}, files)
-	return list(files)
+	return tuple(sorted(files, key=lambda x: x['time'], reverse=True))
 # ----------------------------
 
 
