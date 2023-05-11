@@ -16,6 +16,13 @@
 	"search": "Search:",
 	"favorites": "Favorites",
 
+	"display_mode": "Display mode:",
+	"display_mode_list": "List",
+	"display_mode_folders": "Folders",
+	"sorting": "Sorting:",
+	"by_date": "By date",
+	"by_name": "By name",
+
 	"devices": "Devices:",
 	"input_device": "Input:",
 	"output_device": "Output:",

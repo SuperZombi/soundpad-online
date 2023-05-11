@@ -18,6 +18,13 @@
 	"search": "Поиск:",
 	"favorites": "Избранное",
 
+	"display_mode": "Режим отображения:",
+	"display_mode_list": "Список",
+	"display_mode_folders": "Папки",
+	"sorting": "Сортировка:",
+	"by_date": "По дате",
+	"by_name": "По имени",
+
 	"devices": "Устройства:",
 	"input_device": "Вход:",
 	"output_device": "Выход:",
