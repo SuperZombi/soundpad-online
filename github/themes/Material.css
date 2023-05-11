@@ -15,6 +15,8 @@
 	--accent-color: #009688;
 	--acent-not-active: #006f65;
 	--scroll-bar: #00a194;
+	--sound-button: #006f65;
+	--sound-button-hover: #00a194;
 }
 input[type="text"], input[type="number"]{
 	border: 2px solid var(--not-active);

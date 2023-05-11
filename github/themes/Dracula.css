@@ -15,10 +15,15 @@
 	--accent-color: #bd93f9;
 	--acent-not-active: rgb(120, 120, 180);
 	--scroll-bar: rgb(120, 120, 180);
+	--sound-button: #282a36;
+	--sound-button-hover: #bd93f9;
 }
 input[type="text"], input[type="number"]{
 	border: 2px solid var(--acent-not-active);
 }
 .sound-button.playing{
 	background: var(--not-active);
+}
+#bread-crumbs .crumb:hover{
+	color: #282a36;
 }

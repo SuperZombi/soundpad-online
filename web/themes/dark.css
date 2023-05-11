@@ -3,6 +3,7 @@
 	--text-color: white;
 	--not-active: grey;
 	--scroll-bar: #555;
+	--sound-button: #555;
 }
 
 input[type="text"], input[type="number"]{
@@ -10,7 +11,4 @@ input[type="text"], input[type="number"]{
 }
 #tabs > .tab-title{
 	background: rgb(16, 16, 20);
-}
-.sound-button.playing{
-	background: #555;
 }

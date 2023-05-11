@@ -24,7 +24,7 @@ from send2trash import send2trash
 import webbrowser
 
 
-__version__ = '2.2.2'
+__version__ = '2.3.0'
 
 # ---- Required Functions ----
 
@@ -62,6 +62,9 @@ SETTINGS = {
 	"CHUNK_SIZE": 2048,
 	"permanent_delete": False,
 	"AUDIO_MAX_DUR": 30, # for youtube
+
+    "favorites_display_mode": "list",
+    "favorites_sorting": "date"
 }
 VOLUME = 1.0
 
@@ -330,15 +333,25 @@ def search_meowpad(text, limit=1):
 
 
 @eel.expose
-def search_favorites(text):
+def search_favorites(text, dir_=""):
 	folder = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(folder):
 		return []
-	files = [f for f in glob.glob(os.path.join(folder, '**', '*.*'), recursive=True) if os.path.isfile(os.path.join(folder, f))]
-	if text:
-		filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
-		files = list(map(lambda x: x[0], filtered))
 
+	if SETTINGS["favorites_display_mode"] == "folders" and not text:
+		folder = os.path.join(folder, dir_)
+		files = []
+		directories = []
+		for (_, dirnames, filenames) in os.walk(folder):
+			directories = list(map(lambda x: os.path.join(folder, x), dirnames))
+			files = list(map(lambda x: os.path.join(folder, x), filenames))
+			break
+	else:
+		files = [f for f in glob.glob(os.path.join(folder, '**', '*.*'), recursive=True) if os.path.isfile(os.path.join(folder, f))]
+		if text:
+			filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
+			files = list(map(lambda x: x[0], filtered))
+	
 	files = map(lambda x: {
 			"title": os.path.splitext(os.path.basename(x))[0],
 			"duration": int_to_time(get_durration(x)),
@@ -346,7 +359,26 @@ def search_favorites(text):
 			"time": int(os.path.getmtime(x)),
 			"local": True
 		}, files)
-	return tuple(sorted(files, key=lambda x: x['time'], reverse=True))
+
+	if SETTINGS["favorites_sorting"] == "date":
+		files = sorted(files, key=lambda x: x['time'], reverse=True)
+	else:
+		files = sorted(files, key=lambda x: x['title'])
+
+	if SETTINGS["favorites_display_mode"] == "folders" and not text:
+		directories = map(lambda x:{
+			"title": os.path.basename(x),
+			"link": x,
+			"type": "dir",
+			"local": True
+		}, directories)
+
+		cur_dir = []
+		if dir_ != "" and folder != os.path.join(os.getcwd(), "downloads"):
+			cur_dir.append({"parent_dir": os.path.dirname(folder), "type": "dir", "local": True})
+		files = cur_dir + sorted(directories, key=lambda x: x['title']) + files
+
+	return files
 # ----------------------------
 
 

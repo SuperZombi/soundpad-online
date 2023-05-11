@@ -141,6 +141,22 @@ document.getElementById("api").onchange =e=>{
 	}
 }
 
+function start_search_fav(sorting=false) {
+	if (document.getElementById("api").value == "favorites"){
+		setTimeout(function(){
+			if (sorting){
+				let el = document.querySelector("#bread-crumbs :last-child")
+				if (el){
+					change_dir(el.getAttribute("path"))
+					return
+				}
+				return
+			}
+			start_search()
+		}, 0)
+	}
+}
+
 async function start_search(){
 	let api = document.getElementById("api").value;
 	let value = search.value.trim()
@@ -148,6 +164,7 @@ async function start_search(){
 
 	let results = [];
 	area.innerHTML = ""
+	document.getElementById("bread-crumbs").innerHTML = ""
 	if (api == "youtube"){
 		results = await eel.search_youtube(value)();
 	}
@@ -178,56 +195,107 @@ document.getElementById("search").onkeydown = (e)=>{
 	}
 }
 
+async function change_dir(dirname, element){
+	function remove_after(el){
+		let next = el.nextElementSibling;
+		if (next){
+			remove_after(next)
+		}
+		el.remove()
+	}
+	if (element && element.nextElementSibling){
+		remove_after(element.nextElementSibling)
+	}
+	
+	area.innerHTML = ""
+	results = await eel.search_favorites("", dirname)();
+	if (results.length == 0){
+		area.innerHTML = LANG("nothing_found")
+	} else{
+		results.forEach(e=>{
+			addButton(e)
+		})
+	}
+}
 
 function addButton(args){
 	let parrent = document.createElement("div");
 	parrent.className = "sound-button"
 	parrent.setAttribute("data-url", args.link)
-	let but = document.createElement("button")
-	but.innerHTML = "▶"
-	but.className = "play"
-	but.onclick = _=>{
-		parrent.classList.add("playing")
-		but.disabled = true
-		play_it(args.link)
+	if (args.type == "dir"){
+		parrent.classList.add("folder")
+		let title = document.createElement("span")
+		if (args.parent_dir){
+			title.innerHTML = "..."
+			parrent.onclick = _=>{
+				change_dir(args.parent_dir)
+				let el = document.querySelector("#bread-crumbs :last-child")
+				if (el){
+					el.remove()
+				}
+			}
+		} else{
+			title.innerHTML = "📁" + args.title
+			parrent.onclick = _=>{
+				let div = document.createElement("div")
+				div.className = "crumb"
+				div.innerHTML = args.title
+				div.setAttribute("path", args.link)
+				div.onclick = _=>{
+					change_dir(args.link, div)
+				}
+				document.getElementById("bread-crumbs").appendChild(div)
+				change_dir(args.link)
+			}
+		}
+		parrent.appendChild(title)
 	}
-	let title = document.createElement("span")
-	title.innerHTML = args.title
-	parrent.appendChild(but)
-	parrent.appendChild(title)
-	let other = document.createElement("div")
-	other.className = "other"
-
-	if (args.duration){
-		let t = document.createElement("span")
-		t.className = "time"
-		t.innerHTML = args.duration
-		other.appendChild(t)
-	}
-	let fav = document.createElement("button")
-	fav.innerHTML = "⭐️"
-	fav.className = "favorite"
-	if (args.local){
-		fav.innerHTML = "❌"
-		fav.onclick = _=>{
-			eel.delete_sound(args.link)
-			parrent.classList.add("deleted")
-			fav.disabled = true
+	else {
+		let but = document.createElement("button")
+		but.innerHTML = "▶"
+		but.className = "play"
+		but.onclick = _=>{
+			parrent.classList.add("playing")
 			but.disabled = true
-			setTimeout(_=>{
-				parrent.remove()
-			}, 500)
+			play_it(args.link)
 		}
-	} else{
-		fav.onclick = _=>{
-			eel.save_sound(args.link, args.title)
-			fav.disabled = true
-			fav.innerHTML = "✔️"
-		}
-	}
-	other.appendChild(fav)
+		let title = document.createElement("span")
+		title.innerHTML = args.title
+		parrent.appendChild(but)
+		parrent.appendChild(title)
+		let other = document.createElement("div")
+		other.className = "other"
 
-	parrent.appendChild(other)
+		if (args.duration){
+			let t = document.createElement("span")
+			t.className = "time"
+			t.innerHTML = args.duration
+			other.appendChild(t)
+		}
+		let fav = document.createElement("button")
+		fav.innerHTML = "⭐️"
+		fav.className = "favorite"
+		if (args.local){
+			fav.innerHTML = "❌"
+			fav.onclick = _=>{
+				eel.delete_sound(args.link)
+				parrent.classList.add("deleted")
+				fav.disabled = true
+				but.disabled = true
+				setTimeout(_=>{
+					parrent.remove()
+				}, 500)
+			}
+		} else{
+			fav.onclick = _=>{
+				eel.save_sound(args.link, args.title)
+				fav.disabled = true
+				fav.innerHTML = "✔️"
+			}
+		}
+		other.appendChild(fav)
+		parrent.appendChild(other)
+	}
 	area.appendChild(parrent)
 }
 function play_it(url){

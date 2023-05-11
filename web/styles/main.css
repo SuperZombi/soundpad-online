@@ -6,6 +6,8 @@
 	--accent-color: #0075ff;
 	--acent-not-active: rgb(100, 200, 250);
 	--scroll-bar: #A8A8A8;
+	--sound-button: lightgrey;
+	--sound-button-hover: darkgrey;
 }
 ::-webkit-scrollbar
 {
@@ -68,6 +70,32 @@ fieldset{
 fieldset > div{
 	margin: 10px 0;
 }
+.radio_wrapper{
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin: 0;
+	align-items: baseline;
+}
+label:has(input[type='radio']){
+	cursor: pointer;
+}
+details{
+	border: 2px groove rgb(192, 192, 192);
+	border-radius: 6px;
+	padding: 6px 10px;
+}
+details > summary{
+	cursor: pointer;
+}
+details[open] > summary{
+	border-bottom: 2px groove rgb(192, 192, 192);
+	padding-bottom: 6px;
+	margin-bottom: 6px;
+}
+details > fieldset{
+	margin: 5px 0;
+}
 #version{
 	background: var(--not-active);
 	padding: 5px 10px;
@@ -106,6 +134,13 @@ fieldset > div{
 	align-items: center;
 	gap: 10px;
 }
+.sound-button.folder{
+	cursor: pointer;
+	transition: 0.15s;
+}
+.sound-button.folder:hover{
+	background: var(--sound-button);
+}
 .sound-button .other{
 	margin-left: auto;
 	display: flex;
@@ -113,7 +148,7 @@ fieldset > div{
 	gap: 10px;
 }
 .sound-button.playing{
-	background: lightgrey;
+	background: var(--sound-button);
 	transition: 0s;
 }
 .sound-button.deleted{
@@ -160,6 +195,8 @@ fieldset > div{
 }
 #tab-content > .tab{
 	display: none;
+	overflow: auto;
+	max-height: calc(100vh - 75px);
 }
 #tab-content > .tab.active{
 	display: block;
@@ -245,4 +282,32 @@ fieldset > div{
 }
 .themes > .theme:hover > img {
     outline: var(--acent-not-active) solid 3px;
+}
+
+#bread-crumbs{
+	display: flex;
+	font-size: 0.85em;
+	padding: 0 0 6px 8px;
+}
+#bread-crumbs:not(:has(.crumb)){
+	padding: 0;
+}
+#bread-crumbs .crumb{
+	background: var(--sound-button);
+	padding: 2px 5px;
+	border-radius: 8px;
+	cursor: pointer;
+	position: relative;
+	margin-right: 8px;
+	transition: 0.15s;
+}
+#bread-crumbs .crumb:hover{
+	background: var(--sound-button-hover);
+}
+#bread-crumbs .crumb:after{
+	content: "/";
+	position: absolute;
+	right: 0;
+	transform: translateX(6px);
+	color: var(--text-color);
 }

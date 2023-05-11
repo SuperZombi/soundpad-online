@@ -41,6 +41,8 @@
 					<hr>
 				</div>
 
+				<div id="bread-crumbs"></div>
+
 				<div id="list-area"></div>
 			</div>
 		</div>
@@ -157,23 +159,55 @@
 				</div>
 			</fieldset>
 
-			<fieldset>
-				<legend translation="__deleting_from_favorites__">Deleting from Favorites:</legend>
-				<label>
-					<input type="radio" class="setting" name="permanent_delete" value="false" checked/>
-					<span translation="__to_recycle_bin__">To Recycle Bin</span>
-				</label>
-				<br>
-				<label>
-					<input type="radio" class="setting" name="permanent_delete" value="true"/>
-					<span translation="__permanent_delete__">Permanent</span>
-				</label>
+			<details>
+				<summary>Favorites:</summary>
 
-				<hr>
-				<button translation="__open_favorites__" onclick="eel.open_favorites_dir()">Open Favorites</button>
-			</fieldset>
+				<button style="margin: 4px 0;" translation="__open_favorites__" onclick="eel.open_favorites_dir()">Open Favorites</button>
 
-			<p style="margin-left: 5px;">
+				<fieldset>
+					<legend>Display mode:</legend>
+					<div class="radio_wrapper">
+						<label>
+							<input type="radio" class="setting" name="favorites_display_mode" value="list" checked onchange="start_search_fav()"/>
+							<span>List</span>
+						</label>
+						<label>
+							<input type="radio" class="setting" name="favorites_display_mode" value="folders" onchange="start_search_fav()"/>
+							<span>Folders</span>
+						</label>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Sorting:</legend>
+					<div class="radio_wrapper">
+						<label>
+							<input type="radio" class="setting" name="favorites_sorting" value="date" checked onchange="start_search_fav(true)"/>
+							<span>By date</span>
+						</label>
+						<label>
+							<input type="radio" class="setting" name="favorites_sorting" value="name" onchange="start_search_fav(true)"/>
+							<span>By name</span>
+						</label>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend translation="__deleting_from_favorites__">Deleting from Favorites:</legend>
+					<div class="radio_wrapper">
+						<label>
+							<input type="radio" class="setting" name="permanent_delete" value="false" checked/>
+							<span translation="__to_recycle_bin__">To Recycle Bin</span>
+						</label>
+						<label>
+							<input type="radio" class="setting" name="permanent_delete" value="true"/>
+							<span translation="__permanent_delete__">Permanent</span>
+						</label>
+					</div>
+				</fieldset>
+			</details>
+
+			<p style="margin-left: 5px; margin-bottom: 0;">
 				<span translation="__audio_max_duration__">Audio max duration (for YouTube)</span>
 				<input name="AUDIO_MAX_DUR" type="number" class="setting" min="1" value="30" style="width: 50px;">
 			</p>
