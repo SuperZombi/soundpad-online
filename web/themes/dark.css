@@ -11,3 +11,6 @@ input[type="text"], input[type="number"]{
 #tabs > .tab-title{
 	background: rgb(16, 16, 20);
 }
+.sound-button.playing{
+	background: #555;
+}

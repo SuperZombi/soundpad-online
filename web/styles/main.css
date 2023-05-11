@@ -126,6 +126,9 @@ fieldset > div{
 .sound-button .favorite{
 	float: right;
 }
+.sound-button .favorite[disabled]{
+	cursor: not-allowed;
+}
 .sound-button .time{
 	float: right;
 }

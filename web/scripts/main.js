@@ -222,6 +222,7 @@ function addButton(args){
 		fav.onclick = _=>{
 			eel.save_sound(args.link, args.title)
 			fav.disabled = true
+			fav.innerHTML = "✔️"
 		}
 	}
 	other.appendChild(fav)

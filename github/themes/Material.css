@@ -19,3 +19,6 @@
 input[type="text"], input[type="number"]{
 	border: 2px solid var(--not-active);
 }
+.sound-button.playing{
+	background: var(--acent-not-active);
+}
