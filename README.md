@@ -14,7 +14,7 @@
 
 [Newest version](https://github.com/SuperZombi/soundpad-online/releases/latest)
 
-[Stable version](https://github.com/SuperZombi/soundpad-online/releases/tag/2.0.3) (without voice changer)
+[Old version](https://github.com/SuperZombi/soundpad-online/releases/tag/2.0.3) (without voice changer)
 
 
 ### How it works:
