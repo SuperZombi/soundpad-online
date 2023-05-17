@@ -390,10 +390,8 @@ def stft(
                 f"pad_mode='{pad_mode}' is not supported by librosa.stft"
             )
 
-        if n_fft > y.shape[-1]:
-            warnings.warn(
-                f"n_fft={n_fft} is too large for input signal of length={y.shape[-1]}"
-            )
+        # if n_fft > y.shape[-1]:
+        #     None
 
         # Set up the padding array to be empty, and we'll fix the target dimension later
         padding = [(0, 0) for _ in range(y.ndim)]
