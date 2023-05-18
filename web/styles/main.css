@@ -311,3 +311,6 @@ details > fieldset{
 	transform: translateX(6px);
 	color: var(--text-color);
 }
+#bread-crumbs .crumb:last-child{
+	pointer-events: none;
+}
