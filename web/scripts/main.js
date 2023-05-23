@@ -181,7 +181,7 @@ async function start_search(){
 		results = await eel.search_meowpad(value)();
 	}
 	if (results.length == 0){
-		area.innerHTML = LANG("nothing_found")
+		area.innerHTML = `<span translation="__nothing_found__">${LANG("nothing_found")}</span>`
 	} else{
 		results.forEach(e=>{
 			addButton(e)
@@ -210,7 +210,7 @@ async function change_dir(dirname, element){
 	area.innerHTML = ""
 	results = await eel.search_favorites("", dirname)();
 	if (results.length == 0){
-		area.innerHTML = LANG("nothing_found")
+		area.innerHTML = `<span translation="__nothing_found__">${LANG("nothing_found")}</span>`
 	} else{
 		results.forEach(e=>{
 			addButton(e)
