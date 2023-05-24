@@ -118,9 +118,42 @@ details > fieldset{
 	fill: var(--acent-not-active);
 	color: var(--acent-not-active);
 }
+#list-wrapper{
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+#drag-area{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border: 4px dashed lime;
+	visibility: hidden;
+	backdrop-filter: brightness(0.85) blur(2px);
+	border-radius: 16px;
+}
+#drag-area:after{
+	content: '+';
+	font-size: 60pt;
+	color: lime;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	filter: drop-shadow(0 0 2px black);
+}
+#drag-area.show{
+	visibility: visible;
+}
+
 #list-area{
 	text-align: center;
 	overflow: auto;
+	display: flex;
+	flex-direction: column;
 }
 .sound-button{
 	text-align: left;
@@ -134,9 +167,14 @@ details > fieldset{
 	align-items: center;
 	gap: 10px;
 }
+.sound-button.loading{
+	pointer-events: none;
+	background: var(--not-active);
+}
 .sound-button.folder{
 	cursor: pointer;
 	transition: 0.15s;
+	order: -1;
 }
 .sound-button.folder:hover{
 	background: var(--sound-button);

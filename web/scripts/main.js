@@ -297,6 +297,7 @@ function addButton(args){
 		parrent.appendChild(other)
 	}
 	area.appendChild(parrent)
+	return parrent
 }
 function play_it(url){
 	eel.play_sound_url(url)()
@@ -321,5 +322,60 @@ function getSoundDuration(identifier, duration){
 			element.classList.remove("playing")
 			element.querySelector(".play").disabled = false
 		}, duration * 1000)
+	}
+}
+
+var dragTimer;
+['dragenter', 'dragover'].forEach(eventName => {
+	document.querySelector("#list-wrapper").addEventListener(eventName, e=>{
+		let dt = e.dataTransfer;
+		let files = dt.files
+		if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+			document.querySelector("#drag-area").classList.add("show")
+			clearTimeout(dragTimer);
+		}
+		e.preventDefault()
+		e.stopPropagation()
+	})
+})
+document.querySelector("#list-wrapper").addEventListener("dragleave", e=>{
+	dragTimer = setTimeout(function() {
+		document.querySelector("#drag-area").classList.remove("show")
+	}, 25);
+	e.preventDefault()
+	e.stopPropagation()
+})
+document.querySelector("#list-wrapper").addEventListener("drop", e=>{
+	let dt = e.dataTransfer
+	let files = dt.files
+	document.querySelector("#drag-area").classList.remove("show")
+	for (let i=0; i < files.length; i++){
+		processFile(files[i])
+	}
+	e.preventDefault()
+	e.stopPropagation()
+})
+function processFile(file){
+	if (file && file['type'].split('/')[0] === 'audio'){
+		var reader = new FileReader();
+		reader.onload = async _=>{
+			let path = [...document.querySelectorAll("#bread-crumbs > *")]
+			path = [...path.map(x=>{
+				return x.innerText
+			}), file.name]
+			let filename = path.join("/")
+			let el = addButton({
+				'title': file.name.split('.').slice(0, -1).join('.'),
+				"local": true
+			})
+			el.classList.add("loading")
+			area.prepend(el)
+
+			let args = await eel.drop_file(reader.result, filename)()
+			el.remove()
+			let new_el = addButton(args)
+			area.prepend(new_el)
+		};
+		reader.readAsDataURL(file);
 	}
 }

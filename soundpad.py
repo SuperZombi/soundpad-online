@@ -22,9 +22,10 @@ from datetime import timedelta
 from fuzzywuzzy import process
 from send2trash import send2trash
 import webbrowser
+import urllib
 
 
-__version__ = '2.3.0'
+__version__ = '2.4.0'
 
 # ---- Required Functions ----
 
@@ -514,24 +515,41 @@ def listen_micro():
 
 # -----------------------------
 # --- Storage Functions ------
+def generate_new_file_name(fname):
+	if os.path.exists(fname):
+		name, extension = os.path.splitext(fname)
+		new_name = name + "_1" + extension
+		return generate_new_file_name(new_name)
+	return fname
 def save_file(url, filename):
 	folder = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(folder):
 		os.mkdir(folder)
 	filename = re.sub(r'(?u)[^-\w. ]', '', filename) + ".mp3"
 	target = os.path.join(folder, filename)
-	def generate_new_file_name(fname):
-		if os.path.exists(fname):
-			name, extension = os.path.splitext(fname)
-			new_name = name + "_1" + extension
-			return generate_new_file_name(new_name)
-		return fname
 	target = generate_new_file_name(target)
 	command = ['ffmpeg', '-i', url, "-acodec", "mp3", "-b:a", "128k", '-f', 'mp3', target]
 	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
 	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
 		print(stderr)
+
+@eel.expose
+def drop_file(data, filename):
+	folder = os.path.join(os.getcwd(), "downloads")
+	if not os.path.exists(folder):
+		os.mkdir(folder)
+	target = os.path.join(folder, filename)
+	target = generate_new_file_name(target)
+	response = urllib.request.urlopen(data)
+	with open(target, 'wb') as f:
+		f.write(response.file.read())
+	return {
+		"title": os.path.splitext(os.path.basename(target))[0],
+		"duration": int_to_time(get_durration(target)),
+		"link": target,
+		"local": True
+	}
 
 
 @eel.expose
