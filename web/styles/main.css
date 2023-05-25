@@ -170,11 +170,12 @@ details > fieldset{
 .sound-button.loading{
 	pointer-events: none;
 	background: var(--not-active);
+	order: -1;
 }
 .sound-button.folder{
 	cursor: pointer;
 	transition: 0.15s;
-	order: -1;
+	order: -2;
 }
 .sound-button.folder:hover{
 	background: var(--sound-button);

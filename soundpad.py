@@ -518,7 +518,12 @@ def listen_micro():
 def generate_new_file_name(fname):
 	if os.path.exists(fname):
 		name, extension = os.path.splitext(fname)
-		new_name = name + "_1" + extension
+		if name[-1].isnumeric():
+			arr = list(name)[:-1]
+			arr.extend(str(int(name[-1]) + 1).split())
+			new_name = ''.join(arr) + extension
+		else:
+			new_name = name + "_1" + extension
 		return generate_new_file_name(new_name)
 	return fname
 def save_file(url, filename):
