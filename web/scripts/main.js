@@ -134,12 +134,12 @@ document.querySelectorAll(".setting").forEach(e=>{
 var search = document.getElementById("search");
 var area = document.getElementById("list-area");
 
-document.getElementById("api").onchange =e=>{
+document.getElementById("api").addEventListener("change", e=>{
 	if (e.target.value == "favorites"){
 		search.value = ""
 		start_search()
 	}
-}
+})
 
 function start_search_fav(sorting=false) {
 	if (document.getElementById("api").value == "favorites"){
@@ -161,6 +161,13 @@ async function start_search(){
 	let api = document.getElementById("api").value;
 	let value = search.value.trim()
 	if (api != "favorites" && !value){return}
+	if (api == "favorites" && !value){
+		let el = document.querySelector("#bread-crumbs :last-child")
+		if (el){
+			change_dir(el.getAttribute("path"))
+			return
+		}
+	}
 
 	let results = [];
 	area.innerHTML = ""
