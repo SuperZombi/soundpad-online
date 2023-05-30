@@ -306,7 +306,7 @@ function addButton(args){
 				but.disabled = true
 				setTimeout(_=>{
 					parrent.remove()
-				}, 500)
+				}, 1000)
 			}
 		} else{
 			fav.onclick = _=>{
