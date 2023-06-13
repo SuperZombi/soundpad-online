@@ -167,6 +167,7 @@ function start_search_fav(sorting=false) {
 				}
 				return
 			}
+			document.getElementById("bread-crumbs").innerHTML = ""
 			start_search()
 		}, 0)
 	}
@@ -400,4 +401,11 @@ function processFile(file){
 		};
 		reader.readAsDataURL(file);
 	}
+}
+function open_favorites_dir(){
+	let path = [...document.querySelectorAll("#bread-crumbs > *")]
+	path = path.map(x=>{
+		return x.innerText
+	})
+	eel.open_favorites_dir(path)
 }

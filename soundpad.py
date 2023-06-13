@@ -25,7 +25,7 @@ import webbrowser
 import urllib
 
 
-__version__ = '2.4.1'
+__version__ = '2.4.2'
 
 # ---- Required Functions ----
 
@@ -230,8 +230,8 @@ def open_themes_dir():
 	os.system(f'explorer "{path}"')
 
 @eel.expose
-def open_favorites_dir():
-	path = os.path.join(os.getcwd(), "downloads")
+def open_favorites_dir(target=""):
+	path = os.path.join(os.getcwd(), "downloads", *target)
 	if not os.path.exists(path):
 		os.mkdir(path)
 	os.system(f'explorer "{path}"')
