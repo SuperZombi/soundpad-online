@@ -38,6 +38,10 @@ def resource_path(relative_path):
 def get_version():
 	return __version__
 
+def ffmpeg():
+	build_in = resource_path("ffmpeg.exe")
+	return build_in if os.path.exists(build_in) else 'ffmpeg'
+
 @eel.expose
 def get_translation(code):
 	tr_file = os.path.join(resource_path("web"), "locales", code + ".json")
@@ -389,7 +393,7 @@ stopPlaying = False
 def play_sound(url, identifier=None):
 	global stopPlaying
 	output_file = BytesIO()
-	command = ['ffmpeg', '-i', url, '-f', 'wav', '-']
+	command = [ffmpeg(), '-i', url, '-f', 'wav', '-']
 	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
 	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
@@ -533,7 +537,7 @@ def save_file(url, filename):
 	filename = re.sub(r'(?u)[^-\w. ]', '', filename) + ".mp3"
 	target = os.path.join(folder, filename)
 	target = generate_new_file_name(target)
-	command = ['ffmpeg', '-i', url, "-acodec", "mp3", "-b:a", "128k", '-f', 'mp3', target]
+	command = [ffmpeg(), '-i', url, "-acodec", "mp3", "-b:a", "128k", '-f', 'mp3', target]
 	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
 	stdout, stderr = proc.communicate()
 	if proc.returncode != 0:
