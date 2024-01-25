@@ -5,17 +5,13 @@
 
 <img src="https://shields.io/badge/version-v2.4.3-blue">
 
-### Requirements:
-
-1. [Ffmpeg](https://ffmpeg.org/)
-2. [Virtual Audio Cable](https://vb-audio.com/Cable/)
-
 ### <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" height=18px> Download:
 
-[Newest version](https://github.com/SuperZombi/soundpad-online/releases/latest)
+* [Newest version](https://github.com/SuperZombi/soundpad-online/releases/latest)
+* [Old version](https://github.com/SuperZombi/soundpad-online/releases/tag/2.0.3) (without voice changer)
 
-[Old version](https://github.com/SuperZombi/soundpad-online/releases/tag/2.0.3) (without voice changer)
-
+#### Required:
+* [Virtual Audio Cable](https://vb-audio.com/Cable/)
 
 ### How it works:
 
