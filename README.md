@@ -3,7 +3,7 @@
 <a href="#support-project"><img src="https://shields.io/badge/support_project-2ea043" align="right"></a>
 
 
-<img src="https://shields.io/badge/version-v2.4.2-blue">
+<img src="https://shields.io/badge/version-v2.4.3-blue">
 
 ### Requirements:
 
@@ -49,6 +49,22 @@ You can help with:
 * Other (Programming)
 
 #### 💲Or you can support financially💲:
+<table>
+  <tr>
+    <td>
+       <img width="18px" src="https://www.google.com/s2/favicons?domain=https://donatello.to&sz=256">
+    </td>
+    <td>
+      <a href="https://donatello.to/super_zombi">Donatello</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+       <img width="18px" src="https://www.google.com/s2/favicons?domain=https://www.donationalerts.com&sz=256">
+    </td>
+    <td>
+      <a href="https://www.donationalerts.com/r/super_zombi">Donation Alerts</a>
+    </td>
+  </tr>
+</table>
 (But now it's better to email me and I'll send you the details)
-* [Donatello](https://donatello.to/super_zombi)
-* [DonationAlerts](https://www.donationalerts.com/r/super_zombi)

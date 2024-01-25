@@ -249,6 +249,7 @@ function addButton(args){
 		parrent.classList.add("folder")
 		let title = document.createElement("span")
 		if (args.parent_dir){
+			parrent.classList.add("back")
 			title.innerHTML = "..."
 			parrent.onclick = _=>{
 				change_dir(args.parent_dir)
@@ -409,3 +410,13 @@ function open_favorites_dir(){
 	})
 	eel.open_favorites_dir(path)
 }
+
+document.addEventListener("mouseup", (e) => {
+	if (e.button == 3) // Back
+	{
+		let el = area.querySelector('.sound-button.folder.back')
+		if (el){
+			el.click()
+		}
+	}
+});

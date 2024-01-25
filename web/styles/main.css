@@ -180,6 +180,7 @@ details > fieldset{
 	max-height: 50px;
 	box-sizing: border-box;
 	gap: 10px;
+	user-select: none;
 }
 .sound-button.loading{
 	pointer-events: none;
@@ -358,6 +359,7 @@ details > fieldset{
 	position: relative;
 	margin-right: 8px;
 	transition: 0.15s;
+	user-select: none;
 }
 #bread-crumbs .crumb:hover{
 	background: var(--sound-button-hover);
