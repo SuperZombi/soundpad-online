@@ -200,8 +200,8 @@ async function start_search(){
 	else if (api == "zvukogram"){
 		results = await eel.search_zvukogram(value)();
 	}
-	else if (api == "meowpad"){
-		results = await eel.search_meowpad(value)();
+	else if (api == "uwupad"){
+		results = await eel.search_uwupad(value)();
 	}
 	if (results.length == 0){
 		area.innerHTML = `<span translation="__nothing_found__">${LANG("nothing_found")}</span>`

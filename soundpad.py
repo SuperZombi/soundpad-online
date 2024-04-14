@@ -25,7 +25,7 @@ import webbrowser
 import urllib
 
 
-__version__ = '2.4.3'
+__version__ = '2.5.0'
 
 # ---- Required Functions ----
 
@@ -315,23 +315,21 @@ def search_zvukogram(text):
 
 
 @eel.expose
-def search_meowpad(text, limit=1):
+def search_uwupad(text, limit=24):
 	buttonList = []
-	total_pages = 1
-	for i in range(1, limit+1):
-		if i > total_pages:
-			break
-		HEADERS = {'meowpad-locale': 'ru-ru'}
-		r = requests.get(f'https://api.meowpad.me/v2/sounds/search?q={text.replace(" ", "%20")}&page={i}', headers=HEADERS)
+	total_sounds = 0
+	sounds_per_page = 12
+	for i in range(0, int(limit/sounds_per_page)):
+		r = requests.get(f'https://uwupad.me/api/search?query={text.replace(" ", "%20")}&limit={sounds_per_page}&offset={total_sounds}')
 		answer = r.json()
-		total_pages = answer['meta']['totalPages']
-		tracks = answer['sounds']
+		if len(answer) == 0:
+			break
+		total_sounds += len(answer)
 		tracks = map(lambda x: {
 			"title": x.get("title"),
 			"duration": int_to_time(x.get("duration")),
-			"link": f'https://api.meowpad.me/v1/download/{x.get("slug").strip("/")}'
-		}, tracks)
-
+			"link": f'https://uwupad.me/audio/{x.get("id")}.{x.get("extension")}'
+		}, answer)
 		buttonList.extend(tracks)
 	return buttonList
 
@@ -420,11 +418,12 @@ def play_sound(url, identifier=None):
 					  rate=metadata.streaminfo.sample_rate,
 					  output=True)
 
+		time.sleep(0.15) # remove crackling
+
 		chunk = SETTINGS["CHUNK_SIZE"]
 		data = output_file.read(chunk)
 		while data:
-			if stopPlaying:
-				break
+			if stopPlaying: break
 
 			datachuck = np.frombuffer(data, np.int16)
 			datachuck = datachuck * VOLUME
