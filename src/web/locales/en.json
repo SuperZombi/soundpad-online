@@ -38,5 +38,10 @@
 	"to_recycle_bin": "To Recycle Bin",
 	"permanent_delete": "Permanent",
 	"audio_max_duration": "Audio max duration (for YouTube) (sec)",
-	"nothing_found": "Nothing found"
+	"nothing_found": "Nothing found",
+
+	"donate_title": "Enjoying this free program?",
+	"donate_description": "Consider supporting development with a small donation!",
+	"donate_thanks": "Thank you for your support!",
+	"donate_button": "Donate"
 }
