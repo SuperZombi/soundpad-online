@@ -25,7 +25,7 @@ import webbrowser
 import urllib
 
 
-__version__ = '2.5.0'
+__version__ = '2.5.1'
 
 # ---- Required Functions ----
 
@@ -200,12 +200,13 @@ def get_local_themes():
 
 @eel.expose
 def get_web_themes():
+	themes = []
 	url = "https://api.github.com/repos/SuperZombi/soundpad-online/git/trees/main?recursive=1"
 	r = requests.get(url)
 	data = r.json().get("tree")
+	if not data: return themes
 	filtered = list(filter(lambda x: "github/themes" in x["path"] and x['path'].endswith(".css"), data))
 	root_path = "https://raw.githubusercontent.com/SuperZombi/soundpad-online/main/"
-	themes = []
 	for i in filtered:
 		path = os.path.join(root_path, i["path"])
 		os.path.basename(path)

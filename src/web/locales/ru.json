@@ -40,5 +40,10 @@
 	"to_recycle_bin": "В корзину",
 	"permanent_delete": "Безвозвратно",
 	"audio_max_duration": "Макс. длина аудио (для YouTube) (сек)",
-	"nothing_found": "Ничего не найдено"
+	"nothing_found": "Ничего не найдено",
+
+	"donate_title": "Нравится эта бесплатная программа?",
+	"donate_description": "Поддержите развитие небольшим пожертвованием!",
+	"donate_thanks": "Спасибо за Вашу поддержку!",
+	"donate_button": "Пожертвовать"
 }

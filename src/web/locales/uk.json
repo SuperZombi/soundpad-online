@@ -40,5 +40,10 @@
 	"to_recycle_bin": "В кошик",
 	"permanent_delete": "Назавжди",
 	"audio_max_duration": "Макс. тривалість аудіо (для YouTube) (сек)",
-	"nothing_found": "Нічого не знайдено"
+	"nothing_found": "Нічого не знайдено",
+
+	"donate_title": "Подобається ця безкоштовна програма?",
+	"donate_description": "Підтримайте розвиток невеликим внеском!",
+	"donate_thanks": "Дякуємо за Вашу підтримку!",
+	"donate_button": "Пожертвувати"
 }
