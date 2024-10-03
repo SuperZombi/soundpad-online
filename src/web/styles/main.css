@@ -399,6 +399,27 @@ details > fieldset{
 	border-radius: 16px;
 	box-sizing: border-box;
 	text-align: center;
+	position: relative;
+}
+.popup .close{
+	color: red;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	user-select: none;
+	transition: 0.15s;
+	font-size: 16pt;
+	width: 16pt;
+	height: 16pt;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 16pt;
+}
+.popup .close:hover{
+	transform: rotate(90deg);
 }
 .popup > div svg{
 	fill: var(--accent-color);

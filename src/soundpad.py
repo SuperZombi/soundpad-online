@@ -25,7 +25,7 @@ import webbrowser
 import urllib
 
 
-__version__ = '2.5.1'
+__version__ = '2.5.2'
 
 # ---- Required Functions ----
 
@@ -581,7 +581,7 @@ browsers = ['chrome', 'edge', 'default']
 for browser in browsers:
 	try:
 		threading.Thread(target=listen_micro, daemon=True).start()
-		eel.start("main.html", mode=browser)
+		eel.start("main.html", mode=browser, port=0)
 		break
 	except Exception:
 		print(f"Failed to launch the app using {browser.title()} browser")
