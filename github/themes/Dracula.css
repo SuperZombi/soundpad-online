@@ -18,6 +18,10 @@
 	--sound-button: #282a36;
 	--sound-button-hover: #bd93f9;
 }
+::selection {
+	color: var(--body-color);
+	background-color: var(--accent-color);
+}
 input[type="text"], input[type="number"]{
 	border: 2px solid var(--acent-not-active);
 }
@@ -26,4 +30,7 @@ input[type="text"], input[type="number"]{
 }
 #bread-crumbs .crumb:hover{
 	color: #282a36;
+}
+.popup .close{
+	color: var(--accent-color);
 }

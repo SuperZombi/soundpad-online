@@ -5,7 +5,10 @@
 	--scroll-bar: #555;
 	--sound-button: #555;
 }
-
+::selection {
+	color: var(--body-color);
+	background-color: var(--text-color);
+}
 input[type="text"], input[type="number"]{
 	border: 2px solid #404040;
 }

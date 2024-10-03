@@ -18,9 +18,16 @@
 	--sound-button: #006f65;
 	--sound-button-hover: #00a194;
 }
+::selection {
+	color: var(--body-color);
+	background-color: var(--accent-color);
+}
 input[type="text"], input[type="number"]{
-	border: 2px solid var(--not-active);
+	border-style: solid;
 }
 .sound-button.playing{
 	background: var(--acent-not-active);
+}
+.popup .close{
+	color: var(--accent-color);
 }
