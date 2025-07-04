@@ -5,7 +5,7 @@
 
 <img src="https://shields.io/badge/version-v2.5.2-blue">
 
-### <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" height=18px> Download:
+### <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" width="18px"> Download:
 
 * [Sound-Pad.exe](https://github.com/SuperZombi/soundpad-online/releases/latest)
 
