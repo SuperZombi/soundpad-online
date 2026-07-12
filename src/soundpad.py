@@ -321,7 +321,9 @@ def search_uwupad(text, limit=24):
 	total_sounds = 0
 	sounds_per_page = 12
 	for i in range(0, int(limit/sounds_per_page)):
-		r = requests.get(f'https://uwupad.me/api/search?query={text.replace(" ", "%20")}&limit={sounds_per_page}&offset={total_sounds}')
+		r = requests.get(f'https://uwupad.me/api/search?query={text.replace(" ", "%20")}&limit={sounds_per_page}&offset={total_sounds}',
+			headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36"}
+		)
 		answer = r.json()
 		if len(answer) == 0:
 			break

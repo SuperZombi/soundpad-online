@@ -213,10 +213,16 @@ async function start_search(){
 		})
 	}
 }
+var searchTimer = null;
 document.getElementById("search_but").onclick = start_search
 document.getElementById("search").onkeydown = (e)=>{
 	if (e.keyCode == 13){
 		start_search()
+	} else {
+		if (searchTimer){clearTimeout(searchTimer)}
+		searchTimer = setTimeout(_=>{
+			start_search()
+		}, 500)
 	}
 }
 
