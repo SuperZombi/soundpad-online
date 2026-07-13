@@ -214,9 +214,13 @@ async function start_search(){
 	}
 }
 var searchTimer = null;
-document.getElementById("search_but").onclick = start_search
+document.getElementById("search_but").onclick = ()=> {
+	if (searchTimer){clearTimeout(searchTimer)}
+	start_search()
+}
 document.getElementById("search").onkeydown = (e)=>{
 	if (e.keyCode == 13){
+		if (searchTimer){clearTimeout(searchTimer)}
 		start_search()
 	} else {
 		if (searchTimer){clearTimeout(searchTimer)}
