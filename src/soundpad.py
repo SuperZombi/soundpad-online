@@ -331,7 +331,7 @@ def search_uwupad(text, limit=24):
 		tracks = map(lambda x: {
 			"title": x.get("title"),
 			"duration": int_to_time(x.get("duration")),
-			"link": f'https://uwupad.me/audio/{x.get("id")}.{x.get("extension")}'
+			"link": f'https://cdn.uwupad.me/{x.get("id")}.{x.get("extension")}'
 		}, answer)
 		buttonList.extend(tracks)
 	return buttonList
