@@ -68,8 +68,8 @@ SETTINGS = {
 	"permanent_delete": False,
 	"AUDIO_MAX_DUR": 30, # for youtube
 
-    "favorites_display_mode": "list",
-    "favorites_sorting": "date"
+	"favorites_display_mode": "list",
+	"favorites_sorting": "date"
 }
 VOLUME = 1.0
 
@@ -81,8 +81,8 @@ VOICE_MOD = {
 # ----- subprocess settings -----
 startupinfo = None
 if os.name == 'nt':
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+	startupinfo = subprocess.STARTUPINFO()
+	startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
 # --- Settings Functions ----
 @eel.expose
@@ -340,12 +340,12 @@ def search_uwupad(text, limit=24):
 
 @eel.expose
 def search_favorites(text, dir_=""):
-	folder = os.path.join(os.getcwd(), "downloads")
-	if not os.path.exists(folder):
+	root = os.path.join(os.getcwd(), "downloads")
+	if not os.path.exists(root):
 		return []
 
 	if SETTINGS["favorites_display_mode"] == "folders" and not text:
-		folder = os.path.join(folder, dir_)
+		folder = os.path.join(root, dir_)
 		files = []
 		directories = []
 		for (_, dirnames, filenames) in os.walk(folder):
@@ -353,7 +353,7 @@ def search_favorites(text, dir_=""):
 			files = list(map(lambda x: os.path.join(folder, x), filenames))
 			break
 	else:
-		files = [f for f in glob.glob(os.path.join(folder, '**', '*.*'), recursive=True) if os.path.isfile(os.path.join(folder, f))]
+		files = [f for f in glob.glob(os.path.join(root, '**', '*.*'), recursive=True) if os.path.isfile(os.path.join(root, f))]
 		if text:
 			filtered = process.extractBests(text, files, score_cutoff=60, limit=10)
 			files = list(map(lambda x: x[0], filtered))
@@ -380,8 +380,23 @@ def search_favorites(text, dir_=""):
 		}, directories)
 
 		cur_dir = []
-		if dir_ != "" and folder != os.path.join(os.getcwd(), "downloads"):
-			cur_dir.append({"parent_dir": os.path.dirname(folder), "type": "dir", "local": True})
+		if dir_ != "" and folder != root:
+			rel_path = os.path.relpath(folder, root)
+			parts = rel_path.split(os.sep)
+			current = root
+			bread_crumbs = []
+			for part in parts:
+				current = os.path.join(current, part)
+				bread_crumbs.append({
+					"title": part,
+					"link": current
+				})
+			cur_dir.append({
+				"parent_dir": os.path.dirname(folder),
+				"crumbs": bread_crumbs,
+				"type": "dir",
+				"local": True
+			})
 		files = cur_dir + sorted(directories, key=lambda x: x['title']) + files
 
 	return files

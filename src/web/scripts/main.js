@@ -1,7 +1,7 @@
 (async function(){
 	let version = await eel.get_version()();
 	document.getElementById("version").innerHTML = version;
-	init_tabs()
+	// init_tabs()
 	let devices = await eel.get_audio_devices()();
 
 	let input_devices_area = document.getElementById("input-device");
@@ -30,28 +30,29 @@
 	await load_settings();
 	initThemes()
 	await getTranslation()
-	let tab_now = window.location.hash.split("#").at(-1)
-	if (tab_now){
-		document.querySelector(`#tabs .tab-title[name='${tab_now}']`).click()
-	}
-	start_search()
+	// let tab_now = window.location.hash.split("#").at(-1)
+	// if (tab_now){
+	// 	document.querySelector(`#tabs .tab-title[name='${tab_now}']`).click()
+	// }
+	initApi()
+	// start_search()
 
 	donationPopup()
 })()
 
-function init_tabs(){
-	let tabs = document.querySelector("#tabs")
-	let content = document.getElementById("tab-content");
-	tabs.querySelectorAll(".tab-title").forEach(tab=>{
-		tab.onclick =_=>{
-			content.querySelectorAll(".tab.active").forEach(e=>{e.classList.remove("active")})
-			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
-			tabs.querySelectorAll(".tab-title.active").forEach(e=>{e.classList.remove("active")})
-			tab.classList.add("active")
-			window.location.hash = tab.getAttribute("name")
-		}
-	})
-}
+// function init_tabs(){
+// 	let tabs = document.querySelector("#tabs")
+// 	let content = document.getElementById("tab-content");
+// 	tabs.querySelectorAll(".tab-title").forEach(tab=>{
+// 		tab.onclick =_=>{
+// 			content.querySelectorAll(".tab.active").forEach(e=>{e.classList.remove("active")})
+// 			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
+// 			tabs.querySelectorAll(".tab-title.active").forEach(e=>{e.classList.remove("active")})
+// 			tab.classList.add("active")
+// 			window.location.hash = tab.getAttribute("name")
+// 		}
+// 	})
+// }
 async function load_settings(){
 	let settings = await eel.get_settings()();
 	Object.keys(settings).forEach(key=>{
@@ -97,13 +98,9 @@ function load_one_setting(element, val){
 }
 
 (async function initVolumer(start=1){
-	let volumer = document.getElementById("volumer")
-	let input = volumer.querySelector("input")
-	let text = volumer.querySelector("[name=value]")
+	let input = document.getElementById("volumer")
 	input.value = start * 100
-	text.innerHTML = input.value
 	input.oninput = _=>{
-		text.innerHTML = input.value;
 		eel.change_volume(input.value / 100)
 	}
 })()
@@ -150,59 +147,79 @@ function voicemod_details(value){
 
 var search = document.getElementById("search");
 var area = document.getElementById("list-area");
+var API = "favorites";
 
-document.getElementById("api").addEventListener("change", e=>{
-	if (e.target.value == "favorites"){
-		search.value = ""
-		start_search()
-	}
-})
 
-function start_search_fav(sorting=false) {
-	if (document.getElementById("api").value == "favorites"){
-		setTimeout(function(){
-			if (sorting){
-				let el = document.querySelector("#bread-crumbs :last-child")
-				if (el){
-					change_dir(el.getAttribute("path"))
-					return
-				}
-				return
+function initApi(){
+	const header = document.querySelector("#header")
+	document.querySelectorAll("#api-list button").forEach(button=>{
+		button.addEventListener("click", e=>{
+			API = e.target.value
+			header.textContent = button.textContent
+			if (button.getAttribute("translation")){
+				header.setAttribute("translation", button.getAttribute("translation"))
+			} else {
+				header.removeAttribute("translation")
 			}
-			document.getElementById("bread-crumbs").innerHTML = ""
 			start_search()
-		}, 0)
-	}
+		})
+	})
+	document.querySelector('button[value="favorites"]').dispatchEvent(new Event("click"))
 }
+// document.getElementById("api").addEventListener("change", e=>{
+// 	if (e.target.value == "favorites"){
+// 		search.value = ""
+// 		start_search()
+// 	}
+// })
+
+// function start_search_fav(sorting=false) {
+// 	if (document.getElementById("api").value == "favorites"){
+// 		setTimeout(function(){
+// 			if (sorting){
+// 				let el = document.querySelector("#bread-crumbs :last-child")
+// 				if (el){
+// 					change_dir(el.getAttribute("path"))
+// 					return
+// 				}
+// 				return
+// 			}
+// 			document.getElementById("bread-crumbs").innerHTML = ""
+// 			start_search()
+// 		}, 0)
+// 	}
+// }
 
 async function start_search(){
-	let api = document.getElementById("api").value;
 	let value = search.value.trim()
-	if (api != "favorites" && !value){return}
-	if (api == "favorites" && !value){
-		let el = document.querySelector("#bread-crumbs :last-child")
-		if (el){
-			change_dir(el.getAttribute("path"))
-			return
-		}
+	if (API != "favorites" && !value){
+		area.innerHTML = ""
+		return
 	}
+	// if (API == "favorites" && !value){
+	// 	let el = document.querySelector("#bread-crumbs :last-child")
+	// 	if (el){
+	// 		change_dir(el.getAttribute("path"))
+	// 		return
+	// 	}
+	// }
 
 	let results = [];
 	area.innerHTML = ""
 	document.getElementById("bread-crumbs").innerHTML = ""
-	if (api == "youtube"){
+	if (API == "youtube"){
 		results = await eel.search_youtube(value)();
 	}
-	else if (api == "favorites"){
+	else if (API == "favorites"){
 		results = await eel.search_favorites(value)();
 	}
-	else if (api == "myinstants"){
+	else if (API == "myinstants"){
 		results = await eel.search_myinstants(value)();
 	}
-	else if (api == "zvukogram"){
+	else if (API == "zvukogram"){
 		results = await eel.search_zvukogram(value)();
 	}
-	else if (api == "uwupad"){
+	else if (API == "uwupad"){
 		results = await eel.search_uwupad(value)();
 	}
 	if (results.length == 0){
@@ -214,41 +231,62 @@ async function start_search(){
 	}
 }
 var searchTimer = null;
-document.getElementById("search_but").onclick = ()=> {
-	if (searchTimer){clearTimeout(searchTimer)}
-	start_search()
-}
+// document.getElementById("search_but").onclick = ()=> {
+// 	if (searchTimer){clearTimeout(searchTimer)}
+// 	start_search()
+// }
 document.getElementById("search").onkeydown = (e)=>{
 	if (e.keyCode == 13){
 		if (searchTimer){clearTimeout(searchTimer)}
 		start_search()
-	} else {
-		if (searchTimer){clearTimeout(searchTimer)}
-		searchTimer = setTimeout(_=>{
-			start_search()
-		}, 500)
 	}
 }
+document.getElementById("search").oninput = (e)=>{
+	if (searchTimer){clearTimeout(searchTimer)}
+	searchTimer = setTimeout(_=>{
+		start_search()
+	}, 500)
+}
 
-async function change_dir(dirname, element){
-	function remove_after(el){
-		let next = el.nextElementSibling;
-		if (next){
-			remove_after(next)
-		}
-		el.remove()
-	}
-	if (element && element.nextElementSibling){
-		remove_after(element.nextElementSibling)
-	}
-	
+async function change_dir(dirname){
 	area.innerHTML = ""
+	updateCrumbs([])
 	results = await eel.search_favorites("", dirname)();
 	if (results.length == 0){
 		area.innerHTML = `<span translation="__nothing_found__">${LANG("nothing_found")}</span>`
 	} else{
 		results.forEach(e=>{
 			addButton(e)
+		})
+	}
+}
+
+function updateCrumbs(crumbs){
+	const parrent = document.getElementById("bread-crumbs")
+	parrent.innerHTML = ""
+	function createEl(title, path){
+		let div = document.createElement("div")
+		div.className = "crumb"
+		div.textContent = title
+		div.onclick = _=>{
+			change_dir(path)
+		}
+		return div
+	}
+	if (crumbs.length > 0){
+		const header = document.querySelector("#header")
+		let div = createEl(header.textContent, "")
+		if (header.getAttribute("translation")){
+			div.setAttribute("translation", header.getAttribute("translation"))
+		}
+		parrent.appendChild(div)
+
+		crumbs.forEach(crumb=>{
+			let icon = document.createElement("i")
+			icon.className = "fa-solid fa-angle-right"
+			parrent.appendChild(icon)
+
+			parrent.appendChild(createEl(crumb.title, crumb.link))
 		})
 	}
 }
@@ -261,43 +299,39 @@ function addButton(args){
 		parrent.classList.add("folder")
 		let title = document.createElement("span")
 		if (args.parent_dir){
+			updateCrumbs(args.crumbs)
 			parrent.classList.add("back")
-			title.innerHTML = "..."
+			title.innerHTML = `<i class="fa-solid fa-ellipsis"></i>`
 			parrent.onclick = _=>{
 				change_dir(args.parent_dir)
-				let el = document.querySelector("#bread-crumbs :last-child")
-				if (el){
-					el.remove()
-				}
 			}
 		} else{
-			title.innerHTML = "📁" + args.title
+			let icon = document.createElement("i")
+			icon.className = "fa-solid fa-folder"
+			parrent.appendChild(icon)
+
+			title.innerHTML = args.title
 			parrent.onclick = _=>{
-				let div = document.createElement("div")
-				div.className = "crumb"
-				div.innerHTML = args.title
-				div.setAttribute("path", args.link)
-				div.onclick = _=>{
-					change_dir(args.link, div)
-				}
-				document.getElementById("bread-crumbs").appendChild(div)
 				change_dir(args.link)
 			}
 		}
 		parrent.appendChild(title)
 	}
 	else {
+		let span = document.createElement("span")
 		let but = document.createElement("button")
-		but.innerHTML = "▶"
+		but.innerHTML = `<i class="fa-solid fa-play"></i>`
 		but.className = "play"
 		but.onclick = _=>{
 			parrent.classList.add("playing")
+			but.innerHTML = `<i class="fa-solid fa-stop"></i>`
 			but.disabled = true
 			play_it(args.link)
 		}
 		let title = document.createElement("span")
 		title.innerHTML = args.title
-		parrent.appendChild(but)
+		span.appendChild(but)
+		parrent.appendChild(span)
 		parrent.appendChild(title)
 		let other = document.createElement("div")
 		other.className = "other"
@@ -309,10 +343,9 @@ function addButton(args){
 			other.appendChild(t)
 		}
 		let fav = document.createElement("button")
-		fav.innerHTML = "⭐️"
-		fav.className = "favorite"
 		if (args.local){
-			fav.innerHTML = "❌"
+			fav.className = "action delete"
+			fav.innerHTML = `<i class="fa-solid fa-trash"></i>`
 			fav.onclick = _=>{
 				eel.delete_sound(args.link)
 				parrent.classList.add("deleted")
@@ -323,10 +356,12 @@ function addButton(args){
 				}, 1000)
 			}
 		} else{
+			fav.className = "action save"
+			fav.innerHTML = `<i class="fa-solid fa-star"></i>`
 			fav.onclick = _=>{
 				eel.save_sound(args.link, args.title)
 				fav.disabled = true
-				fav.innerHTML = "✔️"
+				fav.innerHTML = `<i class="fa-solid fa-check"></i>`
 			}
 		}
 		other.appendChild(fav)
@@ -357,6 +392,7 @@ function getSoundDuration(identifier, duration){
 		setTimeout(function() {
 			element.classList.remove("playing")
 			element.querySelector(".play").disabled = false
+			element.querySelector(".play").innerHTML = `<i class="fa-solid fa-play"></i>`
 		}, duration * 1000)
 	}
 }
