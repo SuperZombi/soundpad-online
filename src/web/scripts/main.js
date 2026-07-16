@@ -161,17 +161,18 @@ function initApi(){
 			} else {
 				header.removeAttribute("translation")
 			}
+			if (e.target.value == "favorites"){
+				header.classList.add("hover")
+				header.onclick = _=>open_favorites_dir()
+			} else {
+				header.classList.remove("hover")
+				header.onclick = null
+			}
 			start_search()
 		})
 	})
 	document.querySelector('button[value="favorites"]').dispatchEvent(new Event("click"))
 }
-// document.getElementById("api").addEventListener("change", e=>{
-// 	if (e.target.value == "favorites"){
-// 		search.value = ""
-// 		start_search()
-// 	}
-// })
 
 // function start_search_fav(sorting=false) {
 // 	if (document.getElementById("api").value == "favorites"){
@@ -231,10 +232,6 @@ async function start_search(){
 	}
 }
 var searchTimer = null;
-// document.getElementById("search_but").onclick = ()=> {
-// 	if (searchTimer){clearTimeout(searchTimer)}
-// 	start_search()
-// }
 document.getElementById("search").onkeydown = (e)=>{
 	if (e.keyCode == 13){
 		if (searchTimer){clearTimeout(searchTimer)}

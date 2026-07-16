@@ -10,15 +10,7 @@
 	<script src="scripts/main.js" defer></script>
 </head>
 <body>
-	
-	<!-- <div id="tabs">
-		<button class="tab-title active" name="home" translation="__home__">Home</button>
-		<button class="tab-title" name="settings" translation="__settings__">Settings</button>
-	</div> -->
-
 	<div id="page">
-		
-	
 		<div id="left-menu">
 			<div id="sound-sources" class="grid-with-icon">
 				<i class="fa-solid fa-microphone"></i>
@@ -48,60 +40,19 @@
 			<div class="header-area">
 				<div id="header">Favorites</div>
 				<input id="search" type="search" placeholder="Search..." translation="__placeholder:search__">
-				<!-- <div style="display: flex; gap: 5px;">
-					
-					 <button id="search_but">🔎</button>
-				</div> -->
 			</div>
 			<div id="bread-crumbs"></div>
 			<div id="list-wrapper">
 				<div id="list-area"></div>
 				<div id="drag-area"></div>
+				<button id="stop_play">
+					<i class="fa-solid fa-stop"></i>
+				</button>
 			</div>
 		</div>
 
-
 		<div></div>
 		<div id="tab-content">
-
-			<div class="tab active" name="home">
-				<div style="max-height: calc(100vh - 75px); display: flex; flex-direction: column;">
-					<div>
-						<!-- <span>API:</span>
-						<select id="api" onchange="this.dataset.chosen = this.value;">
-							<option value="favorites" translation="__favorites__">Favorites</option>
-							<option value="uwupad">UwUpad</option>
-							<option value="myinstants">Myinstants</option>
-							<option value="zvukogram">Zvukogram</option>
-							<option value="youtube">YouTube</option>
-						</select> -->
-
-						<button id="favorites-button" translation="__title:open_favorites__" onclick="open_favorites_dir()">
-							<i class="fa-solid fa-folder" style="color:#ffd657;"></i>
-						</button>
-
-						<!-- <div id="volumer">
-							<span translation="__volume__">Volume:</span>
-							<input type="range" min="0" max="100" step="5" value="100">
-							<span name="value"></span>
-						</div> -->
-
-						<button id="stop_play" translation="__stop__">Stop</button>
-						<hr>
-						<!-- <div style="display: flex; gap: 5px;">
-							<span translation="__search__">Search:</span><input id="search" type="text"><button id="search_but">🔎</button>
-						</div> -->
-						<hr>
-					</div>
-					<!-- <div id="bread-crumbs"></div>
-					<div id="list-wrapper">
-						<div id="list-area"></div>
-						<div id="drag-area"></div>
-					</div> -->
-				</div>
-			</div>
-
-
 			<div class="tab" name="settings">
 				<h3 style="text-align: center">Sound Pad Online</h3>
 				<h5 style="text-align: center; margin-bottom: 0;">
@@ -115,17 +66,6 @@
 
 				<fieldset>
 					<legend translation="__devices__">Devices:</legend>
-						<!-- <div>
-							<span translation="__input_device__">Input:</span>
-							<select id="input-device" class="setting" name="INPUT_DEVICE">
-								<option value="false" translation="__disable_device__">None</option>
-							</select>
-						</div>
-						<div>
-							<span translation="__output_device__">Output:</span>
-							<select id="output-device" class="setting" name="OUTPUT_DEVICE"></select>
-						</div> -->
-
 						<div>
 							<span translation="__preview__">Preview:</span>
 							<input type="checkbox" class="setting" name="PREVIEW_DEVICE" checked>
@@ -146,7 +86,7 @@
 						</div>
 				</fieldset>
 
-				<details>
+				<details open>
 					<summary><span translation="__appearance__">Appearance</span></summary>
 					<div>
 						<span translation="__language__">Language:</span>
