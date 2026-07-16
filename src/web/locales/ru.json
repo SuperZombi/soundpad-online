@@ -13,9 +13,9 @@
 	"more_themes": "Больше",
 	"web_themes": "Онлайн темы",
 
-	"volume": "Громкость:",
+	"volume": "Громкость",
 	"stop": "Стоп",
-	"search": "Поиск:",
+	"search": "Поиск...",
 	"favorites": "Избранное",
 
 	"display_mode": "Режим отображения:",
@@ -26,8 +26,8 @@
 	"by_name": "По имени",
 
 	"devices": "Устройства:",
-	"input_device": "Вход:",
-	"output_device": "Выход:",
+	"input_device": "Микрофон",
+	"output_device": "Наушники",
 	"disable_device": "Отключить",
 	"preview": "Прослушивать:",
 	"preview_tooltip": "Слышать звук, воспроизводимый SoundPad",
