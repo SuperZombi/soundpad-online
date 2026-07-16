@@ -118,6 +118,7 @@ document.getElementById("stop_play").onclick = _=>{
 	document.querySelectorAll("#list-area > .sound-button.playing").forEach(e=>{
 		e.classList.remove("playing")
 		e.querySelector(".play").disabled = false
+		e.querySelector(".play").innerHTML = `<i class="fa-solid fa-play"></i>`
 	})
 }
 document.querySelectorAll(".setting").forEach(e=>{
