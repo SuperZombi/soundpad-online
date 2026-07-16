@@ -46,6 +46,10 @@ html, body {
 	box-sizing: border-box;
 }
 
+.hide {
+	display: none !important;
+}
+
 body{
 	font-family: sans-serif;
 	font-size: 14pt;
@@ -61,6 +65,10 @@ button{
 	border-radius: 8px;
 	border: 1px solid var(--border-color);
 	transition: 0.15s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
 }
 button:hover {
 	background: var(--button-hover);
@@ -156,9 +164,11 @@ details > fieldset{
 #version{
 	background: var(--not-active);
 	padding: 5px 10px;
-	border-radius: 15px;
-	margin-left: 5px;
-}
+	border-radius: 16px;
+	font-family: monospace;
+	font-size: 10pt;
+	font-weight: bold;
+	}
 #version:empty{
 	display: none;
 }
@@ -259,9 +269,6 @@ details > fieldset{
 	border-radius: 50%;
 	font-size: 0.85rem;
 	padding: 0.4rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	color: var(--accent-color);
 	border-color: var(--accent-color);
 }
@@ -327,6 +334,9 @@ details > fieldset{
 	background: var(--left-menu-bg);
 	border-right: 1px solid var(--border-color);
 	overflow: hidden;
+	min-width: fit-content;
+	display: flex;
+	flex-direction: column;
 }
 #main-content {
 	height: 100dvh;
@@ -350,14 +360,20 @@ details > fieldset{
 	gap: 1rem;
 	flex-direction: column;
 }
-#header {
+.header {
 	font-size: 16pt;
 	font-weight: bold;
 	text-align: center;
+	text-decoration: none;
+	color: var(--text-color);
 }
-#header.hover:hover {
+.header.hover:hover {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+#settings {
+	overflow: auto;
 }
 
 .grid-with-icon {

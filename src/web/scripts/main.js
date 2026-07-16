@@ -30,29 +30,12 @@
 	await load_settings();
 	initThemes()
 	await getTranslation()
-	// let tab_now = window.location.hash.split("#").at(-1)
-	// if (tab_now){
-	// 	document.querySelector(`#tabs .tab-title[name='${tab_now}']`).click()
-	// }
 	initApi()
-	// start_search()
+	initSettingsButton()
 
 	donationPopup()
 })()
 
-// function init_tabs(){
-// 	let tabs = document.querySelector("#tabs")
-// 	let content = document.getElementById("tab-content");
-// 	tabs.querySelectorAll(".tab-title").forEach(tab=>{
-// 		tab.onclick =_=>{
-// 			content.querySelectorAll(".tab.active").forEach(e=>{e.classList.remove("active")})
-// 			content.querySelector(`.tab[name='${tab.getAttribute("name")}']`).classList.add("active")
-// 			tabs.querySelectorAll(".tab-title.active").forEach(e=>{e.classList.remove("active")})
-// 			tab.classList.add("active")
-// 			window.location.hash = tab.getAttribute("name")
-// 		}
-// 	})
-// }
 async function load_settings(){
 	let settings = await eel.get_settings()();
 	Object.keys(settings).forEach(key=>{
@@ -82,6 +65,31 @@ async function load_settings(){
 
 		load_one_setting(element, val)
 	})
+}
+function switchSettings(showSettings) {
+	const hideElements = [
+		"#bread-crumbs",
+		"#list-wrapper",
+		".header-area",
+	];
+	const showElements = [
+		"#settings",
+		"#settings-header",
+	];
+	hideElements.forEach(selector => {
+		document.querySelector(selector)?.classList.toggle("hide", showSettings);
+	});
+	showElements.forEach(selector => {
+		document.querySelector(selector)?.classList.toggle("hide", !showSettings);
+	});
+}
+
+function initSettingsButton() {
+	document.querySelector("#open_settings").onclick = () => switchSettings(true);
+
+	// document.querySelector("#close_settings")?.addEventListener("click", () => {
+	// 	switchSettings(false);
+	// });
 }
 function load_one_setting(element, val){
 	if (element.type == "checkbox"){
@@ -154,6 +162,7 @@ function initApi(){
 	const header = document.querySelector("#header")
 	document.querySelectorAll("#api-list button").forEach(button=>{
 		button.addEventListener("click", e=>{
+			switchSettings(false)
 			API = e.target.value
 			header.textContent = button.textContent
 			if (button.getAttribute("translation")){
