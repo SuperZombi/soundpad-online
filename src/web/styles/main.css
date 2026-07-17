@@ -367,7 +367,7 @@ details > fieldset{
 	text-decoration: none;
 	color: var(--text-color);
 }
-.header.hover:hover {
+.header .hover:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }
