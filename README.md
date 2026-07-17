@@ -18,11 +18,8 @@
   <img src="github/images/image.jpg" width="800px">
 </p>
 
-### UI Example:
-
 <p align="center">
-  <img src="github/images/ui1.jpg" width="400px">
-  <img src="github/images/ui2.jpg" width="400px">
+  <img src="github/images/photo.jpg" width="800px">
 </p>
 
 ### Dracula theme already here
