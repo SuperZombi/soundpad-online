@@ -56,6 +56,9 @@ async function loadTheme(config){
 		<img draggable="false" src="${config.image}">
 		<span class="theme-name">${config.name}</span>
 		${config.author && `<span class="author">${config.author}</span>`}
+		${config.type == "web" ? '<i class="fa-solid fa-globe"></i>' : 
+			config.type == "local" ? '<i class="fa-solid fa-folder"></i>' : ''
+		}
 	`
 	document.querySelector(".themes").appendChild(element)
 	element.querySelector("input").onchange = _=>{

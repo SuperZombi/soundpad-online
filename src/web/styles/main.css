@@ -433,17 +433,11 @@ details > fieldset{
 	max-width: 100px;
 	word-break: break-word;
 }
-.themes > .theme::after{
-	content: '';
+.themes > .theme i{
 	position: absolute;
-	right: 0;
-	top: 0;
-}
-.themes > .theme.local::after{
-	content: '💾';
-}
-.themes > .theme.web::after{
-	content: '🌐';
+	right: 2px;
+	top: 4px;
+	color: var(--accent-color);
 }
 .themes > .theme img{
 	min-width: 90px;
