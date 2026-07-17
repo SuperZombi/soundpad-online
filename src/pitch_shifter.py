@@ -1,33 +1,15 @@
+from typing import Dict, List, Tuple
+
 import numpy as np
 from numpy import fft
 from numpy.lib.stride_tricks import as_strided
+from numpy.typing import DTypeLike
 import scipy.signal
 import soxr
 # import resampy
 # import samplerate
 
 class ParameterError(Exception): pass
-
-def fix_length(
-    data: np.ndarray, *, size: int, axis: int = -1, **kwargs
-) -> np.ndarray:
-
-    kwargs.setdefault("mode", "constant")
-
-    n = data.shape[axis]
-
-    if n > size:
-        slices = [slice(None)] * data.ndim
-        slices[axis] = slice(0, size)
-        return data[tuple(slices)]
-
-    elif n < size:
-        lengths = [(0, 0)] * data.ndim
-        lengths[axis] = (0, size - n)
-        return np.pad(data, lengths, **kwargs)
-
-    return data
-
 
 def fix_length(
     data: np.ndarray, *, size: int, axis: int = -1, **kwargs
@@ -122,7 +104,7 @@ def resample(
     # Match dtypes
     return np.asarray(y_hat, dtype=y.dtype)
 
-def _phasor_angles(x) -> np.complex_:  # pragma: no cover
+def _phasor_angles(x) -> complex:  # pragma: no cover
     return np.cos(x) + 1j * np.sin(x)  # type: ignore
 
 def phasor(
@@ -276,7 +258,7 @@ def frame(
     writeable: bool = False,
     subok: bool = False,
 ) -> np.ndarray:
-    x = np.array(x, copy=False, subok=subok)
+    x = np.asanyarray(x) if subok else np.asarray(x)
 
     if x.shape[axis] < frame_length:
         raise ParameterError(
@@ -336,6 +318,22 @@ def dtype_r2c(d, *, default = np.complex64):
     # If we're given a complex type already, return it
     dt = np.dtype(d)
     if dt.kind == "c":
+        return dt
+
+    # Otherwise, try to map the dtype.
+    # If no match is found, return the default.
+    return np.dtype(mapping.get(dt, default))
+
+def dtype_c2r(d, *, default = np.float32):
+    mapping: Dict[DTypeLike, type] = {
+        np.dtype(np.complex64): np.float32,
+        np.dtype(np.complex128): np.float64,
+        np.dtype(complex): np.dtype(float).type,
+    }
+
+    # If we're given a real type already, return it
+    dt = np.dtype(d)
+    if dt.kind == "f":
         return dt
 
     # Otherwise, try to map the dtype.
@@ -694,7 +692,7 @@ def istft(
         n_frames = stft_matrix.shape[-1]
 
     if dtype is None:
-        dtype = util.dtype_c2r(stft_matrix.dtype)
+        dtype = dtype_c2r(stft_matrix.dtype)
 
     shape = list(stft_matrix.shape[:-2])
     expected_signal_len = n_fft + hop_length * (n_frames - 1)
