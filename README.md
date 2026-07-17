@@ -22,7 +22,7 @@
   <img src="github/images/photo.jpg" width="800px">
 </p>
 
-### Dracula theme already here
+### Custom themes
 
 ![Dracula.png](github/images/dracula_preview.png)
 
