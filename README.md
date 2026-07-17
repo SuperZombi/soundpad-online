@@ -3,7 +3,7 @@
 <a href="#support-project"><img src="https://shields.io/badge/support_project-2ea043" align="right"></a>
 
 
-<img src="https://shields.io/badge/version-v2.5.2-blue">
+<img src="https://shields.io/badge/version-v3.0.0-blue">
 
 ### <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1161px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" width="18px"> Download:
 
