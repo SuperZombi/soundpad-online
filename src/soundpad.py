@@ -10,8 +10,7 @@ from json_minify import json_minify
 import pyaudio
 import pyaudio._portaudio as pa
 import audio_metadata
-# from librosa.effects import pitch_shift
-from pitch_shifter import *
+from mic_effects import EFFECTS
 from io import BytesIO
 import pytube
 import re
@@ -64,7 +63,7 @@ SETTINGS = {
 	"INPUT_DEVICE": False,
 	"OUTPUT_DEVICE": None,
 	"PREVIEW_DEVICE": True,
-	"CHUNK_SIZE": 4096,
+	"CHUNK_SIZE": 2048,
 	"permanent_delete": False,
 	"AUDIO_MAX_DUR": 30, # for youtube
 
@@ -72,11 +71,6 @@ SETTINGS = {
 	"favorites_sorting": "date"
 }
 VOLUME = 1.0
-
-VOICE_MOD = {
-	"child": 8,
-	"man": -5
-}
 
 # ----- subprocess settings -----
 startupinfo = None
@@ -495,15 +489,26 @@ def listen_micro():
 	global stopRecording
 	if SETTINGS["INPUT_DEVICE"] != False:
 		p = pyaudio.PyAudio()
+		state = {"name": None, "effect": None}
+
+		def get_effect():
+			name = SETTINGS.get("voice_mod")
+			if name != state["name"]:
+				builder = EFFECTS.get(name)
+				state["effect"] = (
+					builder(44100, SETTINGS["CHUNK_SIZE"]) if builder else None
+				)
+				state["name"] = name
+			return state["effect"]
 
 		def pitch_shift_callback(in_data, frame_count, time_info, status):
-			if SETTINGS.get("voice_mod"):
-				pitch_value = VOICE_MOD[SETTINGS["voice_mod"]]
-				audio_data = np.frombuffer(in_data, dtype=np.float32)
-				shifted_audio_data = pitch_shift(audio_data, sr=44100, n_steps=pitch_value)
-				out_data = shifted_audio_data.tobytes()
-				return (out_data, pyaudio.paContinue)
-			return (in_data, pyaudio.paContinue)
+			effect = get_effect()
+			if effect is None:
+				return (in_data, pyaudio.paContinue)
+
+			audio_data = np.frombuffer(in_data, dtype=np.float32)
+			processed = effect.process(audio_data)
+			return (processed.tobytes(), pyaudio.paContinue)
 
 		input_stream = p.open(format=pyaudio.paFloat32,
 					  channels=1,
