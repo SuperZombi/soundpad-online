@@ -23,7 +23,7 @@ jobs:
           pip install -r github/requirements.txt
 
       - name: Build
-        run: pyinstaller --noconfirm --onefile --noconsole --name "Sound Pad Online" --add-data "src/web\\;.\\web" "src/soundpad.py"
+        run: pyinstaller --noconfirm --onefile --noconsole --name "Sound Pad Online" --add-data "src/web\\;.\\web" --add-data="github/ffmpeg.exe;." "src/soundpad.py"
 
       - name: Upload
         uses: xresloader/upload-to-github-release@v1
