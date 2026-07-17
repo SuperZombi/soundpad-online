@@ -165,36 +165,12 @@ function initApi(){
 	document.querySelector('button[value="favorites"]').dispatchEvent(new Event("click"))
 }
 
-// function start_search_fav(sorting=false) {
-// 	if (document.getElementById("api").value == "favorites"){
-// 		setTimeout(function(){
-// 			if (sorting){
-// 				let el = document.querySelector("#bread-crumbs :last-child")
-// 				if (el){
-// 					change_dir(el.getAttribute("path"))
-// 					return
-// 				}
-// 				return
-// 			}
-// 			document.getElementById("bread-crumbs").innerHTML = ""
-// 			start_search()
-// 		}, 0)
-// 	}
-// }
-
 async function start_search(){
 	let value = search.value.trim()
 	if (API != "favorites" && !value){
 		area.innerHTML = ""
 		return
 	}
-	// if (API == "favorites" && !value){
-	// 	let el = document.querySelector("#bread-crumbs :last-child")
-	// 	if (el){
-	// 		change_dir(el.getAttribute("path"))
-	// 		return
-	// 	}
-	// }
 
 	let results = [];
 	area.innerHTML = ""
@@ -256,6 +232,7 @@ function updateCrumbs(crumbs){
 		let div = document.createElement("div")
 		div.className = "crumb"
 		div.textContent = title
+		div.setAttribute("path", path)
 		div.onclick = _=>{
 			change_dir(path)
 		}
@@ -419,11 +396,9 @@ function processFile(file){
 	if (file && file['type'].split('/')[0] === 'audio'){
 		var reader = new FileReader();
 		reader.onload = async _=>{
-			let path = [...document.querySelectorAll("#bread-crumbs > *")]
-			path = [...path.map(x=>{
-				return x.innerText
-			}), file.name]
-			let filename = path.join("/")
+			let crumb = document.querySelector("#bread-crumbs :last-child")
+			let path = crumb?.getAttribute("path") || ""
+			let filename = path + "/" + file.name
 			let el = addButton({
 				'title': file.name.split('.').slice(0, -1).join('.'),
 				"local": true
@@ -440,11 +415,8 @@ function processFile(file){
 	}
 }
 function open_favorites_dir(){
-	let path = [...document.querySelectorAll("#bread-crumbs > *")]
-	path = path.map(x=>{
-		return x.innerText
-	})
-	eel.open_favorites_dir(path)
+	let crumb = document.querySelector("#bread-crumbs :last-child")
+	eel.open_favorites_dir(crumb?.getAttribute("path") || "")
 }
 
 document.addEventListener("mouseup", (e) => {

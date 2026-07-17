@@ -236,7 +236,7 @@ def open_themes_dir():
 
 @eel.expose
 def open_favorites_dir(target=""):
-	path = os.path.join(os.getcwd(), "downloads", *target)
+	path = os.path.join(os.getcwd(), "downloads", target)
 	if not os.path.exists(path):
 		os.mkdir(path)
 	os.system(f'explorer "{path}"')
@@ -565,7 +565,7 @@ def drop_file(data, filename):
 	folder = os.path.join(os.getcwd(), "downloads")
 	if not os.path.exists(folder):
 		os.mkdir(folder)
-	target = os.path.join(folder, filename)
+	target = os.path.join(folder, filename.replace("\\", os.sep).replace("/", os.sep))
 	target = generate_new_file_name(target)
 	response = urllib.request.urlopen(data)
 	with open(target, 'wb') as f:
