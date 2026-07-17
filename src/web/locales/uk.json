@@ -45,5 +45,10 @@
 	"donate_title": "Подобається ця безкоштовна програма?",
 	"donate_description": "Підтримайте розвиток невеликим внеском!",
 	"donate_thanks": "Дякуємо за Вашу підтримку!",
-	"donate_button": "Пожертвувати"
+	"donate_button": "Пожертвувати",
+
+	"voicemod": "Зміна голосу",
+	"voicemod_child": "Дитячий",
+	"voicemod_man": "Чоловічий",
+	"voicemod_cave": "Печера"
 }

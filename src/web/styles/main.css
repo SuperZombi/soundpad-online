@@ -90,6 +90,7 @@ select{
 	border: 1px solid var(--border-color);
 	transition: 0.15s;
 	cursor: pointer;
+	outline: none;
 }
 select:hover {
 	background: var(--button-hover);
@@ -447,6 +448,8 @@ details > fieldset{
 	background: rgb(150, 150, 150, 0.25);
 	object-fit: contain;
 	margin-bottom: 5px;
+	outline: transparent solid 3px;
+	transition: 0.15s;
 }
 .themes > .theme span{
 	text-align: center;
@@ -465,10 +468,10 @@ details > fieldset{
 	display: none;
 }
 .themes > .theme input[type="radio"]:checked + img {
-    outline: var(--accent-color) solid 3px;
+	outline-color: var(--accent-color);
 }
 .themes > .theme:hover > img {
-    outline: var(--accent-not-active) solid 3px;
+	outline-color: var(--accent-not-active);
 }
 
 #bread-crumbs{

@@ -43,5 +43,10 @@
 	"donate_title": "Enjoying this free program?",
 	"donate_description": "Consider supporting development with a small donation!",
 	"donate_thanks": "Thank you for your support!",
-	"donate_button": "Donate"
+	"donate_button": "Donate",
+
+	"voicemod": "Voice Mod",
+	"voicemod_child": "Child",
+	"voicemod_man": "Man",
+	"voicemod_cave": "Cave"
 }
