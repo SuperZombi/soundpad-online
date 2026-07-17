@@ -7,10 +7,8 @@ async function initThemes(){
 	})
 	await loadLocalThemes()
 	theme_after_load()
-	if (document.querySelector(".setting[name=web_themes]").checked){
-		await loadWebThemes()
-		theme_after_load()
-	}
+	await loadWebThemes()
+	theme_after_load()
 }
 function changeTheme(){
 	let el = document.querySelector(".setting[name='theme']:checked")

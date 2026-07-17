@@ -64,11 +64,11 @@ SETTINGS = {
 	"INPUT_DEVICE": False,
 	"OUTPUT_DEVICE": None,
 	"PREVIEW_DEVICE": True,
-	"CHUNK_SIZE": 2048,
+	"CHUNK_SIZE": 4096,
 	"permanent_delete": False,
 	"AUDIO_MAX_DUR": 30, # for youtube
 
-	"favorites_display_mode": "list",
+	"favorites_display_mode": "folders",
 	"favorites_sorting": "date"
 }
 VOLUME = 1.0

@@ -64,45 +64,23 @@
 			</div>
 
 			<div id="settings" class="hide">
-				<fieldset>
-					<legend translation="__devices__">Devices:</legend>
-						<div>
-							<span translation="__preview__">Preview:</span>
-							<input type="checkbox" class="setting" name="PREVIEW_DEVICE" checked>
-							<span translation="__title:preview_tooltip__" title="Hear the sounds that are being played" style="cursor: help;">❓</span>
-						</div>
-
-						<div>
-							<span translation="__chunk_size__">Chunk size:</span>
-							<select class="setting" name="CHUNK_SIZE" style="text-align: right">
-								<option value="256">256</option>
-								<option value="512">512</option>
-								<option value="1024">1024</option>
-								<option value="2048">2048</option>
-								<option value="4096">4096</option>
-								<option value="8192">8192</option>
-							</select>
-							<span translation="__title:chunk_size_tooltip__" title="Larger chunk sizes reduce processing overhead, but increase latency.&#013;Smaller chunk sizes reduce latency but require more processing power" style="cursor: help;">❓</span>
-						</div>
-				</fieldset>
-
-				<details open>
-					<summary><span translation="__appearance__">Appearance</span></summary>
-					<div>
-						<span translation="__language__">Language:</span>
+				<div class="category">
+					<div class="category-header">
+						<i class="fa-solid fa-palette"></i>
+						<span translation="__appearance__">Appearance</span>
+					</div>
+					<div class="grid-with-icon">
+						<i class="fa-solid fa-language"></i>
+						<span translation="__language__">Language</span>
 						<select class="setting" name="language" onchange="getTranslation()">
 							<option value="en" selected>English</option>
 							<option value="ru">Русский</option>
 							<option value="uk">Українська</option>
 						</select>
-					</div>
 
-					<hr>
-
-					<div>
+						<i class="fa-solid fa-eye-dropper"></i>
+						<span translation="__theme__">Theme</span>
 						<div class="themes">
-							<span translation="__theme__">Theme:</span>
-
 							<label class="theme">
 								<input class="setting" name="theme" type="radio" value="light" url="" checked>
 								<img draggable="false" src="themes/light.png">
@@ -120,89 +98,36 @@
 								<span translation="__more_themes__">More</span>
 							</a>
 						</div>
+					</div>
+				</div>
 
-						<div>
-							<span translation="__web_themes__">Web themes</span>
-							<input type="checkbox" class="setting" name="web_themes" checked>
+				<div class="category">
+					<div class="category-header">
+						<i class="fa-solid fa-microphone-lines"></i>
+						<span>Voice Mod</span>
+					</div>
+					<div>
+						<div class="themes">
+							<label class="theme">
+								<input class="setting" name="voice_mod" type="radio" value="false" checked>
+								<img draggable="false" src="images/disabled.svg">
+								<span class="theme-name" translation="__disable_device__">Disable</span>
+							</label>
+
+							<label class="theme">
+								<input class="setting" name="voice_mod" type="radio" value="child">
+								<img draggable="false" src="images/child.png">
+								<span class="theme-name">Child</span>
+							</label>
+
+							<label class="theme">
+								<input class="setting" name="voice_mod" type="radio" value="man">
+								<img draggable="false" src="images/man.png">
+								<span class="theme-name">Man</span>
+							</label>
 						</div>
 					</div>
-				</details>
-
-				<details>
-					<summary><span>Voice Mod</span></summary>
-					<div class="themes">
-						<label class="theme">
-							<input class="setting" name="voice_mod" type="radio" value="false" checked>
-							<img draggable="false" src="images/disabled.svg">
-							<span class="theme-name" translation="__disable_device__">Disable</span>
-						</label>
-
-						<label class="theme">
-							<input class="setting" name="voice_mod" type="radio" value="child">
-							<img draggable="false" src="images/child.png">
-							<span class="theme-name">Child</span>
-						</label>
-
-						<label class="theme">
-							<input class="setting" name="voice_mod" type="radio" value="man">
-							<img draggable="false" src="images/man.png">
-							<span class="theme-name">Man</span>
-						</label>
-					</div>
-				</details>
-
-				<details>
-					<summary><span translation="__favorites__">Favorites</span></summary>
-
-					<button style="margin: 4px 0;" translation="__open_favorites__" onclick="eel.open_favorites_dir()">Open Favorites</button>
-
-					<fieldset>
-						<legend translation="__display_mode__">Display mode:</legend>
-						<div class="radio_wrapper">
-							<label>
-								<input type="radio" class="setting" name="favorites_display_mode" value="list" checked onchange="start_search_fav()"/>
-								<span translation="__display_mode_list__">List</span>
-							</label>
-							<label>
-								<input type="radio" class="setting" name="favorites_display_mode" value="folders" onchange="start_search_fav()"/>
-								<span translation="__display_mode_folders__">Folders</span>
-							</label>
-						</div>
-					</fieldset>
-
-					<fieldset>
-						<legend translation="__sorting__">Sorting:</legend>
-						<div class="radio_wrapper">
-							<label>
-								<input type="radio" class="setting" name="favorites_sorting" value="date" checked onchange="start_search_fav(true)"/>
-								<span translation="__by_date__">By date</span>
-							</label>
-							<label>
-								<input type="radio" class="setting" name="favorites_sorting" value="name" onchange="start_search_fav(true)"/>
-								<span translation="__by_name__">By name</span>
-							</label>
-						</div>
-					</fieldset>
-
-					<fieldset>
-						<legend translation="__deleting_from_favorites__">Deleting from Favorites:</legend>
-						<div class="radio_wrapper">
-							<label>
-								<input type="radio" class="setting" name="permanent_delete" value="false" checked/>
-								<span translation="__to_recycle_bin__">To Recycle Bin</span>
-							</label>
-							<label>
-								<input type="radio" class="setting" name="permanent_delete" value="true"/>
-								<span translation="__permanent_delete__">Permanent</span>
-							</label>
-						</div>
-					</fieldset>
-				</details>
-
-				<p style="margin-left: 5px; margin-bottom: 0;">
-					<span translation="__audio_max_duration__">Audio max duration (for YouTube)</span>
-					<input name="AUDIO_MAX_DUR" type="number" class="setting" min="1" value="30" style="width: 50px;">
-				</p>
+				</div>
 			</div>
 		</div>
 	</div>

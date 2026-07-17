@@ -1,7 +1,6 @@
 (async function(){
 	let version = await eel.get_version()();
 	document.getElementById("version").innerHTML = version;
-	// init_tabs()
 	let devices = await eel.get_audio_devices()();
 
 	let input_devices_area = document.getElementById("input-device");
@@ -40,9 +39,6 @@ async function load_settings(){
 	let settings = await eel.get_settings()();
 	Object.keys(settings).forEach(key=>{
 		let val = settings[key];
-		if (key == "voice_mod"){
-			voicemod_details(val)
-		}
 		let arr = document.querySelectorAll(`.setting[name='${key}']`)
 		let element;
 		if (arr.length > 1){
@@ -86,12 +82,9 @@ function switchSettings(showSettings) {
 
 function initSettingsButton() {
 	document.querySelector("#open_settings").onclick = () => switchSettings(true);
-
-	// document.querySelector("#close_settings")?.addEventListener("click", () => {
-	// 	switchSettings(false);
-	// });
 }
 function load_one_setting(element, val){
+	if (!element){return}
 	if (element.type == "checkbox"){
 		element.checked = val
 	}
@@ -137,22 +130,10 @@ document.querySelectorAll(".setting").forEach(e=>{
 					value = eval(e.value)
 				}
 			}
-			if (name == "voice_mod"){
-				voicemod_details(value)
-			}
 			eel.change_setting(name, value)()
 		})
 	}
 })
-function voicemod_details(value){
-	let details = document.querySelector("input[name='voice_mod']").closest("details")
-	if (value){
-		details.open = true
-		details.querySelector("summary").style.pointerEvents = "none"
-	} else{
-		details.querySelector("summary").style.pointerEvents = ""
-	}
-}
 
 var search = document.getElementById("search");
 var area = document.getElementById("list-area");

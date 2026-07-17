@@ -374,6 +374,9 @@ details > fieldset{
 
 #settings {
 	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .grid-with-icon {
@@ -498,13 +501,6 @@ details > fieldset{
 	user-select: none;
 	color: var(--border-color-active);
 }
-/*#bread-crumbs .crumb:after{
-	content: "/";
-	position: absolute;
-	right: 0;
-	transform: translateX(6px);
-	color: var(--text-color);
-}*/
 #bread-crumbs .crumb:last-child{
 	color: var(--text-color);
 	pointer-events: none;
@@ -514,6 +510,16 @@ details > fieldset{
 	color: var(--text-color);
 }
 
+.category {
+	background: var(--left-menu-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 1rem;
+}
+.category-header {
+	color: var(--text-not-active);
+	margin-bottom: 1rem;
+}
 
 .popup{
 	display: none;
@@ -539,6 +545,9 @@ details > fieldset{
 	box-sizing: border-box;
 	text-align: center;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 .popup .close{
 	color: red;
