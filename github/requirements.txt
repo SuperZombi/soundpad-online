@@ -8,3 +8,5 @@ audio-metadata
 pytube
 numpy
 Send2Trash
+scipy
+soxr
