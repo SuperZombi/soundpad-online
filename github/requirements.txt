@@ -5,6 +5,7 @@ beautifulsoup4
 JSON_minify
 pyaudio
 audio-metadata
+fuzzywuzzy
 pytube
 numpy
 Send2Trash
