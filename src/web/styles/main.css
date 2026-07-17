@@ -573,6 +573,9 @@ details > fieldset{
 	margin: auto;
 }
 
+.popup a {
+	text-decoration: none;
+}
 .popup button {
 	--glow-color: var(--accent-color);
 	--btn-color: var(--body-color);
