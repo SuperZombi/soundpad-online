@@ -1,9 +1,15 @@
 :root{
-	--body-color: #1d1e22;
-	--text-color: white;
-	--not-active: grey;
-	--scroll-bar: #555;
-	--sound-button: #555;
+	--body-color: #0d0f13;
+	--body-secondary: #15181e;
+	--text-color: #edf0f5;
+	--border-color: #262b36;
+	--border-color-active: #454d5c;
+	--button-color: #15181e;
+	--button-hover: #252c3c;
+	--scroll-bar: #1c2029;
+	--sound-button-hover: #1c2029;
+	--text-not-active: #8b93a3;
+	--not-active: #1c2029;
 }
 ::selection {
 	color: var(--body-color);

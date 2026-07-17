@@ -1,0 +1,10 @@
+pyinstaller
+Eel
+requests
+beautifulsoup4
+JSON_minify
+pyaudio
+audio-metadata
+pytube
+numpy
+Send2Trash
