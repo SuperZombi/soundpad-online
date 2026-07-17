@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <img src="github/images/photo.jpg" width="800px">
+  <img src="github/images/main.png" width="800px">
 </p>
 
 ### Custom themes
